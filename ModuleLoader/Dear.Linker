@@ -1,0 +1,26 @@
+OUTPUT_FORMAT("binary")
+ENTRY(ENTRY_HERE)
+
+SECTIONS
+{
+. = 1M;
+
+.text :
+{
+    *(.text)
+}
+
+.data :
+{
+    *(.data)
+}
+.rodata :
+{
+	*(.rodata)
+}
+
+.bss :
+{
+    *(.bss)
+}
+}

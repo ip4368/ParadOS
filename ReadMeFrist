@@ -1,0 +1,2 @@
+Pls setup compiler frist:
+    export PATH="$HOME/COS/Tools/cross/bin:$PATH"
