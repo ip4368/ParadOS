@@ -46,8 +46,8 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	VOID *Buffer;
 	EFI_GRAPHICS_OUTPUT_PROTOCOL *GOP = NULL;
 	UINTN MapKey;
-	VOID (*entry)(COS_VIDEO_HEADER*);
-	COS_VIDEO_HEADER *cos_video = (COS_VIDEO_HEADER *)0x7c00;
+	VOID (*entry)();
+	COS_VIDEO_HEADER *cos_video = (COS_VIDEO_HEADER *)0x7e00;
 	Print(L"COS Bootloader ver. 1.0b\n");
 	Print(L"Firmware Vendor  :  %s \n", ST->FirmwareVendor);
 
@@ -55,7 +55,7 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	Print(L"Loading the Loader...");
 	status = LoadFileFromTheDrive(L"\\Loader\\ModuleLoader", &Buffer, &LoaderSize);
 	if(!CheckProcess(status)) {
-		return status;
+		ST->BootServices->Exit(IH, EFI_SUCCESS, 0, NULL);//yup success~!
 	}
 	Print(L"Loader Size: %d byte\n", LoaderSize);
 	Print(L"Loader loaded.\n");
@@ -66,7 +66,7 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	Print(L"Get infomation about GOP...");
 	status = ST->BootServices->LocateProtocol(&gEfiGraphicsOutputProtocolGuid, NULL, (VOID **)&GOP);
 	if(!CheckProcess(status)) {
-		return status;
+		ST->BootServices->Exit(IH, EFI_SUCCESS, 0, NULL);//yup success~!
 	}
 
 	cos_video->HResolution = GOP->Mode->Info->HorizontalResolution;
@@ -76,31 +76,29 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	cos_video->PixelsPerScanLine = GOP->Mode->Info->PixelsPerScanLine;
 	cos_video->PixelFormat = GOP->Mode->Info->PixelFormat;
 
+
+	Print(L"Passing control...");
 	/*
-	Print(L"HResolution: %d\n", GOP->Mode->Info->HorizontalResolution);
-	Print(L"VResolution: %d\n", GOP->Mode->Info->VerticalResolution);
-	Print(L"FrameBufferBase: %X\n", GOP->Mode->FrameBufferBase);
-	Print(L"FrameBufferSize: %d\n", GOP->Mode->FrameBufferSize);
-	Print(L"PixelsPerScanLine: %d\n", GOP->Mode->Info->PixelsPerScanLine);
-	Print(L"PixelFormat: %d\n", GOP->Mode->Info->PixelFormat);
+	LOGIC:
+		Get memory map frist, then call the ExitBootServices.
+		After that, check if everything fine, if true pass control.
+		Otherwise, call it again. 
+		Until its true.
 	*/
-	Print(L"Getting memory map...");
-	status = GetMapKey(&MapKey);
-	if(!CheckProcess(status)) {
-		return status;
-	}
-
-	status = ST->BootServices->ExitBootServices(IH, MapKey);
-	status = GetMapKey(&MapKey); //call it again
-	if(status == EFI_SUCCESS) {
-
-		status = ST->BootServices->ExitBootServices(IH, MapKey);
-		if(status == EFI_SUCCESS) {
-
-			entry(cos_video);
+	UINT8 i = 0;//Common counter on the earth.
+	do{
+		i++;
+		if(i == 3){
+			ST->BootServices->Exit(IH, EFI_SUCCESS, 0, NULL);//yup success~!
 		}
-	}
-	return EFI_SUCCESS;
+		GetMapKey(&MapKey);//should not do anything before calling the ExitBootServices, these operation might destory the accuracy of memory map.
+		status = ST->BootServices->ExitBootServices(IH, MapKey);
+	}while(status != EFI_SUCCESS);
+
+
+	entry();//WHISPER: Get the fuck out of here pls.
+
+	return EFI_SUCCESS; //Never go here, just let the compiler happy :)
 }
 
 EFI_STATUS GetMapKey(UINTN *key)

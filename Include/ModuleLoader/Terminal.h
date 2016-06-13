@@ -14,7 +14,7 @@
 class Terminal
 {
 public:
-	Terminal(Video vi);
+	void Setup(Video vi);
 	void SetXY(uint64 X, uint64 Y);
 	void Print(char *text);
 	void Print(const char *text, uint32 color);
@@ -26,4 +26,6 @@ private:
 	uint64 cursorX;
 	uint64 cursorY;
 };
+
+extern Terminal term;
 #endif

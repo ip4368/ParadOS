@@ -1,7 +1,10 @@
 
 #include "ModuleLoader/Terminal.h"
 #include "ModuleLoader/Font.h"
-Terminal::Terminal(Video vi)
+
+Terminal term;
+
+void Terminal::Setup(Video vi)
 {
 	video = vi;
 	cursorX = 2;
@@ -121,7 +124,7 @@ void Terminal::PrintChar(char letter, uint32 color)
 			break;
 
 		case '.':
-			index = 13;
+			index = 14;
 			break;
 
 		case '/':
