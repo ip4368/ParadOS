@@ -1,5 +1,6 @@
-#ifndef _MODULELOADER_FONT_H
-#define _MODULELOADER_FONT_H
+#ifndef _MODULELOADER_FONT_H_
+#define _MODULELOADER_FONT_H_
+
 #include "Types.h"
 
 uint8 Font_Data[95][8] = {
@@ -99,4 +100,5 @@ uint8 Font_Data[95][8] = {
 	{ 0x00, 0x70, 0x18, 0x18, 0x0C, 0x18, 0x18, 0x70 },
 	{ 0x00, 0x00, 0x00, 0x3A, 0x6C, 0x00, 0x00, 0x00 },
 };
+
 #endif

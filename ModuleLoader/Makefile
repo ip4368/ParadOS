@@ -1,12 +1,14 @@
-cpp = CPU.cpp main.cpp Panic.cpp Terminal.cpp Video.cpp  ../Library/Operations.cpp 
-all: asm cpp link clean
+c = CPU.c main.c Panic.c Terminal.c Video.c  ../Library/Operations.c 
+all: asm c link clean
 clean: 
 	rm *.o
 	
 asm:
-	nasm -f elf64 entry.asm
-	nasm -f elf64 ASM_Things.asm
-cpp: #-Wno-unused-variable
-	x86_64-elf-g++ -c $(cpp) -I ../Include -fno-stack-protector -ffreestanding -O2  -nostdlib -Wall -Wextra -fno-exceptions -fno-rtti -lgcc
+	nasm -f elf64 portal.asm
+c: #-Wno-unused-variable
+	x86_64-elf-g++ -c $(c) -I ../Include -fno-stack-protector -ffreestanding -O2  -nostdlib -Wall -Wextra -fno-exceptions -fno-rtti -Werror -lgcc
 link:
 	x86_64-elf-ld -T Dear.Linker -nostdlib *.o -o ModuleLoader 
+
+debug:
+	x86_64-elf-objdump -D -b binary -mi386 ModuleLoader > debug.txt

@@ -1,5 +1,5 @@
-#ifndef _INCLUDE_CUMOD_H
-#define _INCLUDE_CUMOD_H
+#ifndef _CUMOD_H_
+#define _CUMOD_H_
 
 //Signiture
 #define MAGIC0 0x90

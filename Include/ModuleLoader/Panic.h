@@ -1,8 +1,8 @@
-#ifndef _MODULELOADER_PANIC_H
-#define _MODULELOADER_PANIC_H
+#ifndef _MODULELOADER_PANIC_H_
+#define _MODULELOADER_PANIC_H_
+
 #include "ModuleLoader/Terminal.h"
 #include "ErrorLevels.h"
-void Panic(char* msg, uint8 level);
-
+void Panic(char*, uint8);
 
 #endif

@@ -4,13 +4,9 @@
 #include <Library/UefiLib.h>
 #include <Library/UefiApplicationEntryPoint.h>
 #include <Library/UefiBootServicesTableLib.h>
-
-#include <Protocol/SimpleFileSystem.h>
-#include <Library/DevicePathLib.h>
-#include <Guid/FileInfo.h>
-
-#define ML_ADDR 0x100000
-#define HDR_ADDR 0x8000
+#include  <Protocol/LoadedImage.h>
+#include  <Protocol/LoadFile.h>
+#include  <Library/ShellLib.h>
 
 typedef struct {
 	UINT32 HResolution;
@@ -38,21 +34,21 @@ UINT8 CheckProcess(EFI_STATUS status)
 	}
 }
 
-EFI_STATUS LoadFileFromTheDrive(IN CHAR16 *FileName, OUT VOID **FileData, OUT UINTN *FileSize);
+EFI_STATUS LoadFileFromTheDrive(IN CONST CHAR16 *FileName, OUT VOID **FileData, OUT UINTN *FileSize);
 EFI_STATUS GetMapKey(UINTN *key);
 
 EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 {
 
 	EFI_STATUS status;
-	VOID *Loader = (VOID*)ML_ADDR;
+	VOID *Loader = (VOID*)0x100000;
 	UINTN LoaderSize;
 	VOID *Buffer;
 	EFI_GRAPHICS_OUTPUT_PROTOCOL *GOP = NULL;
 	UINTN MapKey;
 	VOID (*entry)();
-	COS_VIDEO_HEADER *cos_video = (COS_VIDEO_HEADER *)HDR_ADDR;
-	Print(L"COS Bootloader ver. 1.0N\n");
+	COS_VIDEO_HEADER *cos_video = (COS_VIDEO_HEADER *)0x8000;
+	Print(L"COS Bootloader ver. 1.0S\n");
 	Print(L"Firmware Vendor  :  %s \n", ST->FirmwareVendor);
 
 	//Load Loader
@@ -62,6 +58,7 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 		ST->BootServices->Exit(IH, EFI_SUCCESS, 0, NULL);//yup success~!
 	}
 	Print(L"Loader Size: %d byte\n", LoaderSize);
+	Print(L"Loader loaded.\n");
 
 	ST->BootServices->CopyMem(Loader, Buffer, LoaderSize);
 	FreePool(Buffer);
@@ -80,7 +77,6 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	cos_video->PixelFormat = GOP->Mode->Info->PixelFormat;
 
 	Print(L"Display Resolution: %d x %d\n", cos_video->HResolution, cos_video->VResolution);
-
 
 	Print(L"Passing control...");
 	/*
@@ -132,94 +128,35 @@ EFI_STATUS GetMapKey(UINTN *key)
 	return status;
 }
 
-EFI_STATUS LoadFileFromTheDrive(IN CHAR16 *FileName, OUT VOID **Data, OUT UINTN *Size)
+EFI_STATUS LoadFileFromTheDrive(IN CONST CHAR16 *FileName, OUT VOID **Data, OUT UINTN *Size)
 {
 	EFI_STATUS status;
-	EFI_HANDLE *handles = NULL;
-	EFI_FILE *root = NULL;
-	EFI_FILE *file = NULL;
-	EFI_FILE_INFO *info = NULL;
-	EFI_SIMPLE_FILE_SYSTEM_PROTOCOL *SFS = NULL;
-	UINTN MaxHandles;
-	UINTN InfoBuffSize = 0;
-	UINT8 *buffer;
-	
-	status = gBS->LocateHandleBuffer(ByProtocol, &gEfiSimpleFileSystemProtocolGuid, NULL, &MaxHandles, &handles);
-	if(status != EFI_SUCCESS){
-		Print(L"Getting SFS Protocols...");
-		return status;
-	}
-	for(UINTN i = 0; i < MaxHandles; i++){
-		status = gBS->HandleProtocol(handles[i], &gEfiSimpleFileSystemProtocolGuid, (void **)&SFS);
-		if(status != EFI_SUCCESS){
-			Print(L"Getting file system protocol...");
-			return status;
-		}
-		status = SFS->OpenVolume(SFS, &root);
-		if(status != EFI_SUCCESS){
-			Print(L"Opening volume...");
-			return status;
-		}
-		//check is needed file exist?
-		status = root->Open(root, &file, FileName, EFI_FILE_MODE_READ, 0);
-		if(status == EFI_SUCCESS){
-			//found!
-			break;
-		}
+	SHELL_FILE_HANDLE FileHandle;
+	EFI_FILE_INFO *Info;
+	UINT8 *data;
+	UINTN size;
 
-	}
-
-	//Be a good boy.
-	gBS->FreePool(handles);
-	
-
-	//still nothing...
-	if(file == NULL){
-		Print(L"File not found...");
+	status = ShellOpenFileByName(FileName, &FileHandle, EFI_FILE_MODE_READ, 0);
+	if(status != EFI_SUCCESS) {
 		return status;
 	}
 
-	//Get what size of buffer it need.
-	status = file->GetInfo(file, &gEfiFileInfoGuid, &InfoBuffSize, NULL);
-	if(status == EFI_BUFFER_TOO_SMALL){
-		//Need more space!
-		status = gBS->AllocatePool(EfiBootServicesData, InfoBuffSize, (VOID **)&info);
-		if(status != EFI_SUCCESS){
-		return status;
-	}
-	}else if(status != EFI_SUCCESS){
+	Info = ShellGetFileInfo(FileHandle);
+	size = (UINTN)Info->FileSize;
+	data = AllocateRuntimeZeroPool(size);
+
+	status = ShellReadFile(FileHandle, &size, data);
+	if(status != EFI_SUCCESS) {
 		return status;
 	}
 
-	//if go here, mean sucess to allocate pool.
-	//do the real getinfo().
-	status = file->GetInfo(file, &gEfiFileInfoGuid, &InfoBuffSize, info);
-	if(status != EFI_SUCCESS){
-		return status;
-	}	
-	*Size = info->FileSize;
-	//Not use it any more, u free!
-	gBS->FreePool(info);
-
-	status = gBS->AllocatePool(EfiBootServicesData, *Size, (VOID **)&buffer);
-	if(status != EFI_SUCCESS){
+	status = ShellCloseFile(&FileHandle);
+	if(status != EFI_SUCCESS) {
 		return status;
 	}
-	
-	//Read file
-	status = file->Read(file, Size, buffer);
-	if(status != EFI_SUCCESS){
-		return status;
-	}
-	
-	//Finish!
-	status = file->Close(file);
-	if(status != EFI_SUCCESS){
-		return status;
-	}
-	root->Close(root);
+	*Data = data;
+	*Size = size;
 
-	*Data = buffer;
-
+	FreePool(Info);
 	return EFI_SUCCESS;
 }

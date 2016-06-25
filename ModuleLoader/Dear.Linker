@@ -1,5 +1,5 @@
 OUTPUT_FORMAT("binary")
-ENTRY(ENTRY_HERE)
+ENTRY(PORTAL)
 
 SECTIONS
 {
@@ -7,23 +7,19 @@ SECTIONS
 
 .text :
 {
-    entry.o(.text)
-    *(.text)
-    
+    portal.o(.text)
+    *(.text)   
 }
-
-
-.rodata :
-{
-	*(.rodata)
-}
-
 
 .data :
 {
     *(.data)
 }
 
+.rodata :
+{
+    *(.rodata)
+}
 
 .bss :
 {

@@ -1,10 +1,8 @@
-
+#ifndef _TYPES_H_
+#define _TYPES_H_
 /*Define basic things*/
-#ifndef _TYPE_H
-#define _TYPE_H
 
 #define null (void *)0
-
 
 typedef unsigned char uint8;       //1 byte
 typedef unsigned short uint16;     //2 byte

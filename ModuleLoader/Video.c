@@ -1,9 +1,14 @@
 
 #include "ModuleLoader/Video.h"
 
+	uint32 *FB;
+	uint32 HResolution;
+	uint32 VResolution;
+	uint64 FrameBufferSize;
+	uint32 PixelsPerScanLine;
+	uint8 PixelFormat;
 
-
-void Video::Setup(uint32 HR,uint32 VR,uint64 FBB,uint64 FBS, uint32 PPSL, uint8 PF)
+void VideoSetup(uint32 HR,uint32 VR,uint64 FBB,uint64 FBS, uint32 PPSL, uint8 PF)
 {
 	FB = (uint32 *)FBB;
 	FrameBufferSize = FBS;
@@ -13,13 +18,13 @@ void Video::Setup(uint32 HR,uint32 VR,uint64 FBB,uint64 FBS, uint32 PPSL, uint8 
 	PixelFormat = PF;
 }
 
-void Video::Clear()
+void ClearScreen()
 {
 	for(uint64 i=0; i<=FrameBufferSize; i++) {
 		FB[i] = 0x0;
 	}
 }
-void Video::Clear(uint32 color)
+void VideoScreen(uint32 color)
 {
 	for(uint64 i=0; i<=FrameBufferSize; i++) {
 		FB[i] = color;
@@ -27,17 +32,17 @@ void Video::Clear(uint32 color)
 
 }
 
-void Video::DrawPixel(uint64 x, uint64 y, uint32 color)
+void DrawPixel(uint64 x, uint64 y, uint32 color)
 {
-	if(IsVaildRange(x, y)) {
+	if(IsVaildPosition(x, y)) {
 		uint64 index = y*PixelsPerScanLine+x;
 		FB[index] = color;
 	}
 }
 
-void Video::DrawRectangle(uint64 x, uint64 y, uint32 width, uint32 height, uint32 color)
+void DrawRectangle(uint64 x, uint64 y, uint32 width, uint32 height, uint32 color)
 {
-	if(IsVaildRange(x, y) && IsVaildRange(x + width, y + height)) {
+	if(IsVaildPosition(x, y) && IsVaildPosition(x + width, y + height)) {
 		for(uint64 col = y; col <= height + y; col++) {
 			for(uint64 row = x; row <= width + x; row++) {
 				DrawPixel(row, col, color);
@@ -46,7 +51,7 @@ void Video::DrawRectangle(uint64 x, uint64 y, uint32 width, uint32 height, uint3
 	}
 }
 
-bool Video::IsVaildRange(uint64 x, uint64 y)
+bool IsVaildPosition(uint64 x, uint64 y)
 {
 	if(x > HResolution || y > VResolution) {
 		return false;

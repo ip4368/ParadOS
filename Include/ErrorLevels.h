@@ -1,5 +1,5 @@
-#ifndef _ERRORLEVELS_H
-#define _ERRORLEVELS_H
+#ifndef _ERRORLEVELS_H_
+#define	_ERRORLEVELS_H_
 // ##NO WARNING ALLOWED IN COS!### 
 
 #define PANIC_LEVEL_ONE 0x01 //The system can't even work any more.

@@ -1,60 +1,71 @@
 
 #include "ModuleLoader/Terminal.h"
 #include "ModuleLoader/Font.h"
+#include "Library/Operations.h"
+#include "ModuleLoader/Video.h"
 
-Terminal term;
+#define TERMINAL_DEFAULT_COLOR 0xFFFFFF
 
-void Terminal::Setup(Video vi)
+#define NUMBER_INDEX 16
+#define UPPER_INDEX 33
+#define LOWER_INDEX 65
+
+uint64 cursorX;
+uint64 cursorY;
+
+void PrintChar(char letter, uint32 color);
+
+void TerminalSetup()
 {
-	video = vi;
 	cursorX = 2;
 	cursorY = 2;
 }
 
-void Terminal::SetXY(uint64 X, uint64 Y)
+void SetCursor(uint64 X, uint64 Y)
 {
-	if(video.IsVaildRange(X, Y)) {
+	if(IsVaildPosition(X, Y)) {
 		cursorX = X;
 		cursorY = Y;
 	}
 }
 
 
-void Terminal::Print(char *text)
+void Print(char *text)
 {
 	Print(text, TERMINAL_DEFAULT_COLOR);
 }
-void Terminal::Print(const char *text, uint32 color)
+
+void Print(const char *text, uint32 color)
 {
 	uint32 size = 0;
 	while(text[size] != '\0') {
 		char temp = text[size];
-		if(temp == '\n' || !video.IsVaildRange(0, cursorY)) {
+		if(temp == '\n' || !IsVaildPosition(0, cursorY)) {
 
-			if(video.IsVaildRange(0, cursorY + 10)) {
-				cursorY += 10;
+			if(IsVaildPosition(0, cursorY + 16)) {
+				cursorY += 16;
 				cursorX = 2;
 			} else {
-				video.Clear();
-				SetXY(2,2);
+				ClearScreen();
+				SetCursor(2,2);
 			}
 
 		} else if(temp == ' ') {
-			if(video.IsVaildRange(cursorX + 4, 0)) {
+			if(IsVaildPosition(cursorX + 8, 0)) {
 				cursorX += 4;
 			} else {
 				cursorX = 2;
-				cursorY += 10;
+				cursorY += 16;
 			}
 		} else {
 			PrintChar(text[size], color);
-			cursorX += 9;
+			cursorX += 16;
 		}
 		size++;
 	}
 }
 
-void Terminal::PrintChar(char letter, uint32 color)
+void PrintChar(char letter, uint32 color)
 {
 	int index = 0;
 	int TempX = 0;
@@ -211,16 +222,19 @@ void Terminal::PrintChar(char letter, uint32 color)
 	for(int col = 0; col <= 7; col++) {
 		TempX = 0;
 		uint8 TempData = TempArray[col];
-		for(int row = 0; row <= 8; row++) {
+		for(int row = 0; row <= 7; row++) {
 
 			if(TempData >= 128) { //2^8
-				video.DrawPixel(cursorX + TempX, cursorY + TempY, color);
+				DrawPixel(cursorX + TempX, cursorY + TempY, color);
+				DrawPixel(cursorX + TempX + 1, cursorY + TempY, color);
+				DrawPixel(cursorX + TempX, cursorY + TempY + 1, color);
+				DrawPixel(cursorX + TempX + 1, cursorY + TempY + 1, color);
 			}
-			TempX++;
+			TempX += 2;
 			TempData <<= 1;
 
 		}
-		TempY++;
+		TempY += 2;
 	}
 
 

@@ -1,7 +1,8 @@
 #include "ModuleLoader/CPU.h"
 
-	uint32 CPU_VENDOR = 0x0;
 
+uint32 CPU_VENDOR = 0;
+uint32 CPU_FEATURES = 0;
 void SetupCPU(){
 	//We will keep using this two variable in functions.
 	uint32 result = 0;
@@ -14,7 +15,7 @@ void SetupCPU(){
 	if(!result){
 		//if eax == 0, then CPUID_Support = false;
 		Panic((char *)"CPUID did not supported.\n", PANIC_LEVEL_TWO);
-		REST();
+		HaltCPU();
 	}//support!
 
 	//
@@ -28,6 +29,8 @@ void SetupCPU(){
 		CPU_VENDOR = UNKNOWN_CPU;
 	}
 
+
+
 	//
 	//Check is CPU support Ext. function.
 	//
@@ -35,7 +38,7 @@ void SetupCPU(){
 	if(!result){
 		//if eax == 0, then CPUID_Ext._Support = false;
 		Panic((char *)"CPUID Ext. did not supported.\n", PANIC_LEVEL_TWO);
-		REST();
+		HaltCPU();
 	}//support!
 
 	//
@@ -44,12 +47,50 @@ void SetupCPU(){
 	//But we need to check that and make sure everything is ok
 	//
 	__cpuid(0x80000001, useless, useless, useless, result);
-	if(!(result & bit_LM))){ //Thanks for the cpuid.h, make me work ez
+	if(!(result & bit_LM)){ //Thanks for the cpuid.h, make me work ez
 		//Well..not the normal way.
-		Panic((char *)"Oh my fucking god! You are not in long mode!\n", PANIC_LEVEL_TWO);
-		REST();
+		Panic((char *)"Omfg! You are not in long mode!\n", PANIC_LEVEL_TWO);
+		HaltCPU();
+	}//We are in long mode
+
+	//
+	//Get CPU feature flag
+	//
+	__cpuid(0x1, useless, useless, useless, CPU_FEATURES); //we only need edx
+	if(CPU_FEATURES == 0){
+		Panic((char *)"Cant get cpu feature flags.\n", PANIC_LEVEL_TWO);
+		HaltCPU();
 	}
+/*
+	//
+	//Check are we in 64 bit mode by check the EFER.LMA
+	//
+	uint64 msr = GetMSR(0xC0000080); //Get EFER
+	if(!(msr & (1 << 10))){
+		Panic((char *)"Not in 64 bit mode.\n", PANIC_LEVEL_TWO);
+		HaltCPU();
+	}//We are in 64 bit mode
+*/
+	
+	//TODO: Update GDT and page table.
 
-	BRAN_WASHING();	
+}
 
+uint64 GetMSR(uint32 msr_number){
+
+	uint32 lower = 0;
+	uint32 higher = 0;
+	uint64 result = 0;
+	if(CPU_FEATURES & MSR_SUPPORTED){ //MSR supported
+		__asm__ ("rdmsr\n\t" : "=a"(lower), "=d"(higher) : "c"(msr_number));
+		result = (higher <<  31) | lower;
+		return result;
+	}else{
+		return 0;
+	}
+}
+
+void HaltCPU(){
+	//do nothing.
+	for(;;);
 }	
