@@ -59,3 +59,11 @@ bool IsVaildPosition(uint64 x, uint64 y)
 		return true;
 	}
 }
+
+uint32 GetHResolution(){
+	return HResolution;
+}
+
+uint32 GetVResolution(){
+	return VResolution;
+}

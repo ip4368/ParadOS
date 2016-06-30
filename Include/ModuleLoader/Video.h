@@ -20,4 +20,7 @@ typedef struct {
 
 } COS_VIDEO_HEADER;
 
+uint32 GetHResolution();
+uint32 GetVResolution();
+
 #endif

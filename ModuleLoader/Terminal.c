@@ -10,20 +10,38 @@
 #define UPPER_INDEX 33
 #define LOWER_INDEX 65
 
-uint64 cursorX;
-uint64 cursorY;
+#define LETTER_SIZE_X 16 
+#define LETTER_SIZE_Y 16
 
+uint32 cursorX;
+uint32 cursorY;
+
+uint32 cursorY_Max = 0;
+uint32 cursorX_Max = 0;
 void PrintChar(char letter, uint32 color);
 
 void TerminalSetup()
 {
-	cursorX = 2;
-	cursorY = 2;
+	cursorX = 0;
+	cursorY = 0;
+
+	if(GetHResolution() % LETTER_SIZE_X){//if resolution is odd number than reserve 1 word of the end of X
+		cursorX_Max =  (GetHResolution() / LETTER_SIZE_X) - 1;
+	}else{
+		cursorX_Max =  (GetHResolution() / LETTER_SIZE_X);
+	} 
+
+	if(GetVResolution() % LETTER_SIZE_Y){//if resolution is odd number than reserve 1 word of the end of Y
+		cursorY_Max =  (GetVResolution() / LETTER_SIZE_Y) - 1;
+	}else{
+		cursorY_Max =  (GetVResolution() / LETTER_SIZE_Y);
+	} 
+
 }
 
-void SetCursor(uint64 X, uint64 Y)
+void SetCursor(uint32 X, uint32 Y)
 {
-	if(IsVaildPosition(X, Y)) {
+	if((X > 0 && X <= cursorX_Max) && (Y > 0 && Y <= cursorY_Max)) {
 		cursorX = X;
 		cursorY = Y;
 	}
@@ -42,24 +60,24 @@ void Print(const char *text, uint32 color)
 		char temp = text[size];
 		if(temp == '\n' || !IsVaildPosition(0, cursorY)) {
 
-			if(IsVaildPosition(0, cursorY + 16)) {
-				cursorY += 16;
-				cursorX = 2;
+			if(IsVaildPosition(0, cursorY)) {
+				cursorY++;
+				cursorX = 0;
 			} else {
 				ClearScreen();
-				SetCursor(2,2);
+				SetCursor(0,0);
 			}
 
 		} else if(temp == ' ') {
-			if(IsVaildPosition(cursorX + 8, 0)) {
-				cursorX += 4;
+			if(IsVaildPosition(cursorX + 1, 0)) {
+				cursorX++;
 			} else {
-				cursorX = 2;
-				cursorY += 16;
+				cursorX = 0;
+				cursorY++;
 			}
 		} else {
 			PrintChar(text[size], color);
-			cursorX += 16;
+			cursorX++;
 		}
 		size++;
 	}
@@ -225,13 +243,13 @@ void PrintChar(char letter, uint32 color)
 		for(int row = 0; row <= 7; row++) {
 
 			if(TempData >= 128) { //2^8
-				DrawPixel(cursorX + TempX, cursorY + TempY, color);
-				DrawPixel(cursorX + TempX + 1, cursorY + TempY, color);
-				DrawPixel(cursorX + TempX, cursorY + TempY + 1, color);
-				DrawPixel(cursorX + TempX + 1, cursorY + TempY + 1, color);
+				DrawPixel(cursorX * LETTER_SIZE_X + TempX, cursorY * LETTER_SIZE_Y + TempY, color);
+				DrawPixel(cursorX * LETTER_SIZE_X + TempX + 1, cursorY * LETTER_SIZE_Y + TempY, color);
+				DrawPixel(cursorX * LETTER_SIZE_X + TempX, cursorY * LETTER_SIZE_Y + TempY + 1, color);
+				DrawPixel(cursorX * LETTER_SIZE_X + TempX + 1, cursorY * LETTER_SIZE_Y + TempY +1, color);
 			}
 			TempX += 2;
-			TempData <<= 1;
+			TempData <<= 1; //shift to the left
 
 		}
 		TempY += 2;

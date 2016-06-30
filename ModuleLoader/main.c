@@ -17,7 +17,7 @@ extern "C" void main()
 
 	//Greeting
 	//Customizable Operating System
-	Print((char *)"Wellcome to Customizable Operating System.\n\n");
+	Print((char *)"Wellcome to ParadOS!\n\n");
 	Print((char *)"Setting up the hardware...");
 
 	SetupCPU();

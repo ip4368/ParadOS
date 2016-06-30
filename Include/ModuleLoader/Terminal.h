@@ -4,7 +4,7 @@
 #include "Types.h"
 
 void TerminalSetup();
-void SetCursor(uint64 X, uint64 Y);
+void SetCursor(uint32 X, uint32 Y);
 void Print(char *text);
 void Print(const char *text, uint32 color);
 

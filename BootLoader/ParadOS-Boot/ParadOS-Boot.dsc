@@ -18,11 +18,11 @@
 ##
 
 [Defines]
-  PLATFORM_NAME                  = COS-Boot
+  PLATFORM_NAME                  = ParadOS-Boot
   PLATFORM_GUID                  = 0458dade-8b6e-4e45-b773-1b27cbda3e06
   PLATFORM_VERSION               = 0.01
   DSC_SPECIFICATION              = 0x00010006
-  OUTPUT_DIRECTORY               = Build/COS-Boot
+  OUTPUT_DIRECTORY               = Build/ParadOS-Boot
   SUPPORTED_ARCHITECTURES        = IA32|X64|ARM|AARCH64
   BUILD_TARGETS                  = DEBUG|RELEASE|NOOPT
   SKUID_IDENTIFIER               = DEFAULT
@@ -107,5 +107,5 @@
 [Components]
 
 #### Sample Applications.
-  COS-Boot/Bootloader/COS-Boot.inf
+  ParadOS-Boot/Bootloader/ParadOS-Boot.inf
   
