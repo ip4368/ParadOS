@@ -1,7 +1,7 @@
 
-# Customizable Operating System
+# ParadOS
 
-### What is the purpose of COS?
+### What is the purpose of ParadOS?
 Want to create a  modular os, that the people can decide what the os look like, and also keep the compatibility.
 Just like the LEGO, Build something with the components and they work together.
 ### Target: 
