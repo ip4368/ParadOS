@@ -2,6 +2,8 @@
 edk2/
 unix/
 windows/
+#Ignore Output
+ModuleLoader
 
 # Compiled Object files
 *.slo

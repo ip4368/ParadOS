@@ -4,7 +4,7 @@ You can download my toolchain on:
 
 or..do it yourself.
 
-#Compile ParadOS-Bootloader
+##Compile ParadOS-Bootloader
 
 1. Get edk2 by git clone https://github.com/tianocore/edk2
 2. Compiler things
@@ -26,5 +26,10 @@ or..do it yourself.
 		source edksetup.sh
 		build
 
+##Setup the cross compiler
+
+1.Build your own cross compiler, the target should be x86_64-elf or get one from the top links.
+
+2. Set env. : export PATH="<FILL IT>/ParadOS/Tools/<YOUR PLATFROM (unix or windows)>/cross/bin:$PATH"
 
 	
