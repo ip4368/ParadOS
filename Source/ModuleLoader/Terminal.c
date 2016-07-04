@@ -1,8 +1,8 @@
 
 #include "ModuleLoader/Terminal.h"
 #include "ModuleLoader/Font.h"
-#include "Library/Operations.h"
-#include "ModuleLoader/Video.h"
+#include "Library/Text.h"
+#include "ModuleLoader/Graphics.h"
 
 #define TERMINAL_DEFAULT_COLOR 0xFFFFFF
 

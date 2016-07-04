@@ -1,5 +1,5 @@
 
-#include "Library/Operations.h"
+#include "Library/Text.h"
 
 uint64 strlen(char *in)
 {

@@ -1,5 +1,5 @@
 #include "Types.h"
-#include "ModuleLoader/Video.h"
+#include "ModuleLoader/Graphics.h"
 #include "ModuleLoader/Terminal.h"
 #include "ModuleLoader/CPU.h"
 
@@ -7,10 +7,10 @@
 extern "C" void main()
 {
 
-	COS_VIDEO_HEADER *video_hdr = (COS_VIDEO_HEADER *)0x8000;
+	COS_GRAPHICS_HEADER *Graphics_hdr = (COS_GRAPHICS_HEADER *)0x8000;
 
 	//Make sure video functional frist, easy to debug.*JK*
-	VideoSetup(video_hdr->HResolution, video_hdr->VResolution, video_hdr->FrameBufferBase, video_hdr->FrameBufferSize, video_hdr->PixelsPerScanLine, video_hdr->PixelFormat);
+	GraphicsSetup(Graphics_hdr->HResolution, Graphics_hdr->VResolution, Graphics_hdr->FrameBufferBase, Graphics_hdr->FrameBufferSize, Graphics_hdr->PixelsPerScanLine, Graphics_hdr->PixelFormat);
 	TerminalSetup();
 
 	ClearScreen();//Clean sscreen
