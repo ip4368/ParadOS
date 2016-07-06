@@ -7,13 +7,13 @@
 extern "C" void main()
 {
 
-	COS_GRAPHICS_HEADER *Graphics_hdr = (COS_GRAPHICS_HEADER *)0x8000;
+	COS_GRAPHICS_HEADER *graphics_hdr = (COS_GRAPHICS_HEADER *)0x8000;
 
 	//Make sure video functional frist, easy to debug.*JK*
-	GraphicsSetup(Graphics_hdr->HResolution, Graphics_hdr->VResolution, Graphics_hdr->FrameBufferBase, Graphics_hdr->FrameBufferSize, Graphics_hdr->PixelsPerScanLine, Graphics_hdr->PixelFormat);
+	GraphicsSetup(graphics_hdr->HResolution, graphics_hdr->VResolution, graphics_hdr->FrameBufferBase, graphics_hdr->FrameBufferSize, graphics_hdr->PixelsPerScanLine, graphics_hdr->PixelFormat);
 	TerminalSetup();
 
-	ClearScreen();//Clean sscreen
+	CleanScreen();//Clean sscreen
 
 	//Greeting
 	//Customizable Operating System

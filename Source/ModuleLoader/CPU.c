@@ -1,8 +1,7 @@
 #include "ModuleLoader/CPU.h"
 
 
-uint32 CPU_VENDOR = 0;
-uint32 CPU_FEATURES = 0;
+
 void SetupCPU(){
 	//We will keep using this two variable in functions.
 	uint32 result = 0;
@@ -60,19 +59,7 @@ void SetupCPU(){
 	if(CPU_FEATURES == 0){
 		Panic((char *)"Cant get cpu feature flags.\n", PANIC_LEVEL_TWO);
 		HaltCPU();
-	}
-/*
-	//
-	//Check are we in 64 bit mode by check the EFER.LMA
-	//
-	uint64 msr = GetMSR(0xC0000080); //Get EFER
-	if(!(msr & (1 << 10))){
-		Panic((char *)"Not in 64 bit mode.\n", PANIC_LEVEL_TWO);
-		HaltCPU();
-	}//We are in 64 bit mode
-*/
-	
-	//TODO: Update GDT and page table.
+	}	
 
 }
 

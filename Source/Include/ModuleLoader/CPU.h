@@ -7,7 +7,7 @@
 #include <cpuid.h>
 
 
-//defines
+////Defines////
 #define INTEL_CPU 0x00000001
 #define AMD_CPU 0x00000002
 #define UNKNOWN_CPU 0xffffffff
@@ -45,9 +45,13 @@
 #define TM_SUPPORTED 1 << 29
 //30-31 --reserved
 
-//functions
+////Functions////
 void SetupCPU();
 uint64 GetMSR(uint32 msr_number);
 void HaltCPU();
+
+////Variables////
+uint32 CPU_VENDOR = 0;
+uint32 CPU_FEATURES = 0;
 
 #endif

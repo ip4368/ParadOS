@@ -1,4 +1,4 @@
-c = CPU.c main.c Panic.c Terminal.c Graphics.c  ../Library/Texts.c 
+c = CPU.c main.c Panic.c Terminal.c Graphics.c  ../Library/String.c 
 all: asm c link clean
 clean: 
 	rm *.o
