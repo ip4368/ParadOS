@@ -1,3 +1,7 @@
+//AH! AH! AH! windows compiler sucks!
+#pragma warning(disable:4152) //just make windows compiler happy
+//im gonna using windows C compiler, because the efi file size is much lighter.
+
 #include <Uefi.h>
 #include <Library/DevicePathLib.h>
 #include <Library/MemoryAllocationLib.h>
@@ -21,7 +25,8 @@ typedef struct {
 	UINT8 PixelFormat;
 
 
-} COS_VIDEO_HEADER;
+} POS_GRAPHICS_INFO;
+
 
 UINT8 CheckProcess(EFI_STATUS status)
 {
@@ -51,12 +56,13 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	EFI_GRAPHICS_OUTPUT_PROTOCOL *GOP = NULL;
 	UINTN MapKey;
 	VOID (*entry)();
-	COS_VIDEO_HEADER *cos_video = (COS_VIDEO_HEADER *)HDR_ADDR;
+	
+	POS_GRAPHICS_INFO *pos_video = (POS_GRAPHICS_INFO *)HDR_ADDR;
 	Print(L"ParadOS Bootloader ver. 1.0N\n");
 	Print(L"Firmware Vendor  :  %s \n", ST->FirmwareVendor);
 
 	//Load Loader
-	Print(L"Loading the Loader...");
+	Print(L"Loading the ModuleLoader...");
 	status = LoadFileFromTheDrive(L"\\Loader\\ModuleLoader", &Buffer, &LoaderSize);
 	if(!CheckProcess(status)) {
 		ST->BootServices->Exit(IH, EFI_SUCCESS, 0, NULL);//yup success~!
@@ -65,24 +71,24 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 
 	ST->BootServices->CopyMem(Loader, Buffer, LoaderSize);
 	FreePool(Buffer);
-	entry = Loader;
-	Print(L"Get infomation about GOP...");
+
+	entry = Loader; //windows compiler care about this
+
+	Print(L"Get GOP infomation...");
 	status = ST->BootServices->LocateProtocol(&gEfiGraphicsOutputProtocolGuid, NULL, (VOID **)&GOP);
 	if(!CheckProcess(status)) {
 		ST->BootServices->Exit(IH, EFI_SUCCESS, 0, NULL);//yup success~!
 	}
 
-	cos_video->HResolution = GOP->Mode->Info->HorizontalResolution;
-	cos_video->VResolution = GOP->Mode->Info->VerticalResolution;
-	cos_video->FrameBufferBase = GOP->Mode->FrameBufferBase;
-	cos_video->FrameBufferSize = GOP->Mode->FrameBufferSize;
-	cos_video->PixelsPerScanLine = GOP->Mode->Info->PixelsPerScanLine;
-	cos_video->PixelFormat = GOP->Mode->Info->PixelFormat;
+	pos_video->HResolution = GOP->Mode->Info->HorizontalResolution;
+	pos_video->VResolution = GOP->Mode->Info->VerticalResolution;
+	pos_video->FrameBufferBase = GOP->Mode->FrameBufferBase;
+	pos_video->FrameBufferSize = GOP->Mode->FrameBufferSize;
+	pos_video->PixelsPerScanLine = GOP->Mode->Info->PixelsPerScanLine;
+	pos_video->PixelFormat = GOP->Mode->Info->PixelFormat;
 
-	Print(L"Display Resolution: %d x %d\n", cos_video->HResolution, cos_video->VResolution);
-
-
-	Print(L"Passing control...");
+	Print(L"Passing control...\n");
+	Print(L"If you stuck, that mean ParadOS fail to start.");
 	/*
 	LOGIC:
 		Get memory map frist, then call the ExitBootServices.
