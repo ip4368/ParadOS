@@ -64,7 +64,7 @@ void Print(const char *text, uint32 color)
 				cursorY++;
 				cursorX = 0;
 			} else {
-				ClearScreen();
+				CleanScreen();
 				SetCursor(0,0);
 			}
 

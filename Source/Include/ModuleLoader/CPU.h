@@ -51,7 +51,7 @@ uint64 GetMSR(uint32 msr_number);
 void HaltCPU();
 
 ////Variables////
-uint32 CPU_VENDOR = 0;
-uint32 CPU_FEATURES = 0;
+extern uint32 CPU_VENDOR;
+extern uint32 CPU_FEATURES;
 
 #endif

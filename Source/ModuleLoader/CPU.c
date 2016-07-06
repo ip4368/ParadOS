@@ -1,6 +1,7 @@
 #include "ModuleLoader/CPU.h"
 
-
+uint32 CPU_VENDOR = 0;
+uint32 CPU_FEATURES = 0;
 
 void SetupCPU(){
 	//We will keep using this two variable in functions.
