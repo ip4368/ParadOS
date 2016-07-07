@@ -2,6 +2,7 @@
 #pragma warning(disable:4152) //just make windows compiler happy
 //im gonna using windows C compiler, because the efi file size is much lighter.
 
+
 #include <Uefi.h>
 #include <Library/DevicePathLib.h>
 #include <Library/MemoryAllocationLib.h>
@@ -43,12 +44,14 @@ UINT8 CheckProcess(EFI_STATUS status)
 	}
 }
 
-EFI_STATUS LoadFileFromTheDrive(IN CHAR16 *FileName, OUT VOID **FileData, OUT UINTN *FileSize);
-EFI_STATUS GetMapKey(UINTN *key);
+
+EFI_STATUS MemoryWork();
+EFI_STATUS LoadFileFromTheDrive(IN CHAR16 *FileName, OUT VOID **Data, OUT UINTN *FileSize);
+EFI_STATUS GetMapKey(OUT UINTN *key);
 
 EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 {
-
+	UINTN Index;
 	EFI_STATUS status;
 	VOID *Loader = (VOID*)ML_ADDR;
 	UINTN LoaderSize;
@@ -56,8 +59,9 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	EFI_GRAPHICS_OUTPUT_PROTOCOL *GOP = NULL;
 	UINTN MapKey;
 	VOID (*entry)();
-	
 	POS_GRAPHICS_INFO *pos_video = (POS_GRAPHICS_INFO *)HDR_ADDR;
+
+
 	Print(L"ParadOS Bootloader ver. 1.0N\n");
 	Print(L"Firmware Vendor  :  %s \n", ST->FirmwareVendor);
 
@@ -87,6 +91,13 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	pos_video->PixelsPerScanLine = GOP->Mode->Info->PixelsPerScanLine;
 	pos_video->PixelFormat = GOP->Mode->Info->PixelFormat;
 
+	Print(L"Memory Work\n");
+	MemoryWork();
+	ST->BootServices->WaitForEvent (
+  1,
+  &(ST->ConIn->WaitForKey),
+  &Index);
+
 	Print(L"Passing control...\n");
 	Print(L"If you stuck, that mean ParadOS fail to start.");
 	/*
@@ -108,31 +119,64 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 
 
 	entry();//WHISPER: Get the fuck out of here pls.
+	
 
 	return EFI_SUCCESS; //Never go here, just let the compiler happy :)
 }
 
+EFI_STATUS MemoryWork(){
+
+	//lazy..
+	EFI_STATUS status;
+	EFI_MEMORY_DESCRIPTOR *MemMap = NULL; //point to nothing
+	UINTN MemMapSize = 0;
+	UINTN DesSize;
+	UINT32 DesVersion;
+	UINTN MapKey;
+	UINT8 IsEqual = 0;
+
+	//Get Memory Map Size frist
+	status = gST->BootServices->GetMemoryMap(&MemMapSize, MemMap, &MapKey, &DesSize, &DesVersion);
+	if(status != EFI_BUFFER_TOO_SMALL){
+		return status; 
+	}else{
+		status = gBS->AllocatePool(EfiRuntimeServicesData, MemMapSize, (VOID **)&MemMap);
+		if(!CheckProcess(status)){//cant allocate
+			return status;
+		}
+	}
+	status = gST->BootServices->GetMemoryMap(&MemMapSize, MemMap, &MapKey, &DesSize, &DesVersion);
+	if(!CheckProcess(status)){
+		return status;
+	}
+	//Check paging ratio
+	if((UINT64)MemMap[0].PhysicalStart == (UINT64)MemMap[0].VirtualStart){ //if Physical address is equal Virtual address
+		IsEqual = 1;//great!
+		Print(L"Physical address is equal Virtual address\n"); //Physical address is equal Virtual address in my pc
+	}
+	return EFI_SUCCESS;
+
+}
+
 EFI_STATUS GetMapKey(UINTN *key)
 {
-	EFI_STATUS status;
-	UINTN MemMapSize = sizeof(EFI_MEMORY_DESCRIPTOR) * 16;
+	EFI_STATUS status = EFI_OUT_OF_RESOURCES;//init variable
+	UINTN MemMapSize = 0;
 	UINTN DescriptorSize = 0;
 	UINT32 DescriptorVersion = 0;
 	EFI_MEMORY_DESCRIPTOR *MemMap = NULL;
 	do {
-		MemMap = AllocatePool(MemMapSize);
-		if(MemMap == NULL) {
-			Print(L"Cant allocate Pool\n");
-			status = EFI_UNSUPPORTED;
-			break;
-		}
-		status = gST->BootServices->GetMemoryMap(&MemMapSize, MemMap, key, &DescriptorSize, &DescriptorVersion);
+		//once the GetMemoryMap function return EFI_BUFFER_TOO_SMALL, it also return the buffer size it need
 		if(status == EFI_BUFFER_TOO_SMALL) {
-			FreePool(MemMap);
-			MemMapSize += sizeof(EFI_MEMORY_DESCRIPTOR);
+			status = gBS->AllocatePool(EfiBootServicesData, MemMapSize, (VOID **)&MemMap);
+			if(!CheckProcess(status)){
+				return status;
+			}
 		} else if(status == EFI_INVALID_PARAMETER) {
 			break;
 		}
+		status = gST->BootServices->GetMemoryMap(&MemMapSize, MemMap, key, &DescriptorSize, &DescriptorVersion);
+		
 	} while(status != EFI_SUCCESS);
 
 	return status;
