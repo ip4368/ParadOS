@@ -5,7 +5,7 @@
 
 void TerminalSetup();
 void SetCursor(uint32 X, uint32 Y);
-void Print(char *text);
-void Print(const char *text, uint32 color);
+void SetColor(uint32 c);
+void Print(const char *text, ...);
 
 #endif

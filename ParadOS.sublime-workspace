@@ -1,0 +1,440 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"in",
+				"infomation"
+			],
+			[
+				"sub",
+				"subIntText"
+			],
+			[
+				"UIN",
+				"UINT64_MAX"
+			],
+			[
+				"va",
+				"va_arg"
+			],
+			[
+				"co",
+				"color"
+			],
+			[
+				"uin",
+				"uint32"
+			],
+			[
+				"uint",
+				"uint64"
+			],
+			[
+				"va_",
+				"va_stat"
+			],
+			[
+				"M",
+				"Meminfo"
+			],
+			[
+				"Mem",
+				"MemInfo"
+			],
+			[
+				"size",
+				"sizeof"
+			],
+			[
+				"V",
+				"VResolution"
+			],
+			[
+				"T",
+				"TotalPages"
+			],
+			[
+				"Ph",
+				"PhysicalAddressEnd"
+			],
+			[
+				"pos",
+				"pos_MemMap"
+			],
+			[
+				"POS",
+				"POS_MEMORY_INFO"
+			],
+			[
+				"UINT",
+				"UINT64"
+			],
+			[
+				"EFI",
+				"EFI_SUCCESS"
+			],
+			[
+				"Boot",
+				"BootServices"
+			],
+			[
+				"mem",
+				"MemSize"
+			],
+			[
+				"pag",
+				"pageNumber"
+			],
+			[
+				"UI",
+				"UINT64"
+			],
+			[
+				"UN",
+				"UINTN"
+			],
+			[
+				"MemMa",
+				"MemMap"
+			],
+			[
+				"Prin",
+				"PrintError"
+			],
+			[
+				"Print",
+				"Print"
+			],
+			[
+				"Chce",
+				"CheckProcess"
+			],
+			[
+				"Des",
+				"DesNumber"
+			],
+			[
+				"Check",
+				"CheckProcess"
+			],
+			[
+				"Me",
+				"Mem_Des"
+			],
+			[
+				"st",
+				"status"
+			],
+			[
+				"MemM",
+				"MemMap"
+			],
+			[
+				"Map",
+				"MapKey"
+			],
+			[
+				"D",
+				"DesSize"
+			],
+			[
+				"MemMap",
+				"MemMapSize"
+			],
+			[
+				"L",
+				"Loader"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "Source/BootLoader/ParadOS-Boot/Bootloader/Bootloader.c",
+			"settings":
+			{
+				"buffer_size": 7652,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Source/ModuleLoader/CPU.c",
+			"settings":
+			{
+				"buffer_size": 2193,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 104.0,
+		"last_filter": "Package Control: insta",
+		"selected_items":
+		[
+			[
+				"Package Control: insta",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 325.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/BootLoader",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/BootLoader/ParadOS-Boot",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/BootLoader/ParadOS-Boot/Bootloader",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader"
+	],
+	"file_history":
+	[
+		"/C/Users/IAZE/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/Library/String.h",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/Types.h",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/main.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Terminal.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Library/String.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Terminal.h",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Panic.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Tools/edk2/ParadOS-Boot/Bootloader/Bootloader.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Graphics.h",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/BootLoader/ParadOS-Boot/Bootloader/Bootloader.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/CPU.h",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/CPU.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Interrupt.h",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Panic.h",
+		"/C/Users/IAZE/Documents/ParadOS/Source/ModuleLoader/CPU.c",
+		"/C/Users/IAZE/Documents/ParadOS/.gitignore",
+		"/C/Users/IAZE/Desktop/ParadOS/Source/ModuleLoader/Makefile",
+		"/C/Users/IAZE/Desktop/ParadOS/Source/ModuleLoader/Terminal.c",
+		"/C/Users/IAZE/Desktop/ParadOS/Source/Include/ModuleLoader/Font.h",
+		"/C/Users/IAZE/Desktop/ParadOS/Source/Include/Library/String.h",
+		"/C/Users/IAZE/Desktop/ParadOS/Source/Library/String.c",
+		"/C/Users/IAZE/Desktop/ParadOS/Source/Include/ModuleLoader/Graphics.h",
+		"/C/Users/IAZE/Desktop/ParadOS/Source/ModuleLoader/Graphics.c",
+		"/C/Users/IAZE/Desktop/ParadOS/Source/ModuleLoader/main.c",
+		"/C/Users/IAZE/Desktop/ParadOS/Source/Include/ModuleLoader/Terminal.h",
+		"/C/Users/IAZE/Desktop/ParadOS/Source/Include/ModuleLoader/Video.h"
+	],
+	"find":
+	{
+		"height": 26.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"//yup success~!",
+			"pos_Graphics",
+			" = ",
+			"UINT64",
+			"UINTN",
+			"UINT32",
+			"graphics_hdr",
+			"pos_video",
+			"+ ",
+			"MemMap",
+			"MemType",
+			"SystemTable",
+			"cos_video",
+			"POS_GRAPHICS_HEADER",
+			"COS_GRAPHICS_HEADER",
+			"COS_VIDEO_HEADER",
+			"video_hdr"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "Source/BootLoader/ParadOS-Boot/Bootloader/Bootloader.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7652,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2984,
+								2984
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2520.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "Source/ModuleLoader/CPU.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2193,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								924,
+								924
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 60.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "ParadOS.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 223.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

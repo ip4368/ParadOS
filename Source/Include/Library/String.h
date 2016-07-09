@@ -9,8 +9,8 @@ bool IsNumber(char input);
 bool IsUpperCase(char input);
 bool IsLowerCase(char input);
 /*
-	MEMORY OPERATIONS
+	Convert Operations
 */
-
+int ToString(int input, char buffer[]);
 
 #endif

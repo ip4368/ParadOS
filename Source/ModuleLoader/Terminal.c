@@ -3,6 +3,7 @@
 #include "ModuleLoader/Font.h"
 #include "Library/String.h"
 #include "ModuleLoader/Graphics.h"
+#include <stdarg.h>
 
 #define TERMINAL_DEFAULT_COLOR 0xFFFFFF
 
@@ -15,6 +16,8 @@
 
 uint32 cursorX;
 uint32 cursorY;
+
+uint32 color = TERMINAL_DEFAULT_COLOR;
 
 uint32 cursorY_Max = 0;
 uint32 cursorX_Max = 0;
@@ -47,15 +50,16 @@ void SetCursor(uint32 X, uint32 Y)
 	}
 }
 
-
-void Print(char *text)
-{
-	Print(text, TERMINAL_DEFAULT_COLOR);
+void SetColor(uint32 c){ 
+	color = c;
 }
 
-void Print(const char *text, uint32 color)
+//dumbest method
+void Print(const char *text, ...)
 {
-	uint32 size = 0;
+	uint64 size = 0;
+	va_list arg_list;
+
 	while(text[size] != '\0') {
 		char temp = text[size];
 		if(temp == '\n' || !IsVaildPosition(0, cursorY)) {
@@ -75,12 +79,64 @@ void Print(const char *text, uint32 color)
 				cursorX = 0;
 				cursorY++;
 			}
-		} else {
-			PrintChar(text[size], color);
+		} else if(temp == '%'){
+			char nextChar = text[size + 1];
+			va_start(arg_list, text);
+			switch(nextChar){
+				case 'd':{//int
+					char buffer[20];
+					int  subint = va_arg(arg_list, int);
+					int size = ToString(subint, buffer);
+					for(int i = size; i >= 0; i--){
+						PrintChar(buffer[i], color);
+						cursorX++;
+					}
+					break;
+				}
+				case 's':{//string
+					char *subString = va_arg(arg_list, char*);
+					uint64 subStringSize = 0;
+					while(subString[subStringSize] != '\0'){
+						temp = subString[subStringSize];
+						if(temp == '\n' || !IsVaildPosition(0, cursorY)) {
+
+							if(IsVaildPosition(0, cursorY)) {
+								cursorY++;
+								cursorX = 0;
+							} else {
+								CleanScreen();
+								SetCursor(0,0);
+							}
+						}else if(temp == ' ') {
+								if(IsVaildPosition(cursorX + 1, 0)) {
+									cursorX++;
+								} else {
+									cursorX = 0;
+									cursorY++;
+								}
+							}else{
+								PrintChar(temp, color);
+								cursorX++;
+							}
+							subStringSize++;
+						}
+					va_end(arg_list);
+					break;
+				}
+				default:{
+					PrintChar('%', color);
+					cursorX++;
+					break;
+				}
+			}
+			size++;
+		}else {
+			PrintChar(temp, color);
 			cursorX++;
 		}
 		size++;
 	}
+	color = TERMINAL_DEFAULT_COLOR;
 }
 
 void PrintChar(char letter, uint32 color)

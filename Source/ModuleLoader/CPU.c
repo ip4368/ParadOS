@@ -29,8 +29,6 @@ void SetupCPU(){
 		CPU_VENDOR = UNKNOWN_CPU;
 	}
 
-
-
 	//
 	//Check is CPU support Ext. function.
 	//

@@ -45,3 +45,27 @@ bool IsLowerCase(char input)
 	}
 	return false;
 }
+
+int ToString(int input, char buffer[]){
+	int temp = input;
+	int i = 0;
+	if(input < 0){
+		temp = -(temp);
+	}
+	do{
+		buffer[i++] = temp % 10 + '0';
+	}while((temp /= 10) > 0);
+
+	if(input < 0){
+		buffer[i++] = '-';
+	}
+	buffer[i] = '\0';
+	return i;
+}
+/*
+char* ToString(bool input){
+
+}
+
+char ToChar(unsigned)
+*/
