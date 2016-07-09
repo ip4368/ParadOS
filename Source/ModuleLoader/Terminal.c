@@ -5,13 +5,11 @@
 #include "ModuleLoader/Graphics.h"
 #include <stdarg.h>
 
-#define TERMINAL_DEFAULT_COLOR 0xFFFFFF
-
 #define NUMBER_INDEX 16
 #define UPPER_INDEX 33
 #define LOWER_INDEX 65
 
-#define LETTER_SIZE_X 16 
+#define LETTER_SIZE_X 14
 #define LETTER_SIZE_Y 16
 
 uint32 cursorX;
@@ -57,87 +55,90 @@ void SetColor(uint32 c){
 //dumbest method
 void Print(const char *text, ...)
 {
-	uint64 size = 0;
+	uint32 size = 0;
+	uint32 arg_num = 0;
+	char current;
+	char next;
 	va_list arg_list;
-
+	va_start(arg_list, text);
+	//Frist, we need to know how many args we have.
 	while(text[size] != '\0') {
-		char temp = text[size];
-		if(temp == '\n' || !IsVaildPosition(0, cursorY)) {
-
-			if(IsVaildPosition(0, cursorY)) {
-				cursorY++;
-				cursorX = 0;
-			} else {
-				CleanScreen();
-				SetCursor(0,0);
+		//get current letter
+		char current = text[size];
+		char next = text[size + 1];
+		if(current == '%'){
+			if(next == 's' || next == 'd'){
+				arg_num++;
+				size++; //jump over 2 letter
 			}
-
-		} else if(temp == ' ') {
-			if(IsVaildPosition(cursorX + 1, 0)) {
-				cursorX++;
-			} else {
-				cursorX = 0;
-				cursorY++;
-			}
-		} else if(temp == '%'){
-			char nextChar = text[size + 1];
-			va_start(arg_list, text);
-			switch(nextChar){
-				case 'd':{//int
-					char buffer[20];
-					int  subint = va_arg(arg_list, int);
-					int size = ToString(subint, buffer);
-					for(int i = size; i >= 0; i--){
-						PrintChar(buffer[i], color);
-						cursorX++;
-					}
-					break;
-				}
-				case 's':{//string
-					char *subString = va_arg(arg_list, char*);
-					uint64 subStringSize = 0;
-					while(subString[subStringSize] != '\0'){
-						temp = subString[subStringSize];
-						if(temp == '\n' || !IsVaildPosition(0, cursorY)) {
-
-							if(IsVaildPosition(0, cursorY)) {
-								cursorY++;
-								cursorX = 0;
-							} else {
-								CleanScreen();
-								SetCursor(0,0);
-							}
-						}else if(temp == ' ') {
-								if(IsVaildPosition(cursorX + 1, 0)) {
-									cursorX++;
-								} else {
-									cursorX = 0;
-									cursorY++;
-								}
-							}else{
-								PrintChar(temp, color);
-								cursorX++;
-							}
-							subStringSize++;
-						}
-					va_end(arg_list);
-					break;
-				}
-				default:{
-					PrintChar('%', color);
-					cursorX++;
-					break;
-				}
-			}
-			size++;
-		}else {
-			PrintChar(temp, color);
-			cursorX++;
 		}
 		size++;
 	}
-	color = TERMINAL_DEFAULT_COLOR;
+
+	//Second, Print all the things.
+	size = 0; //reset.
+	while(text[size] != '\0'){ //another loop..
+		current = text[size];
+		next = text[size + 1];
+		
+		//check position
+		if(cursorX >= cursorX_Max){ //if current row is at the end, then break.
+			cursorX = 0;
+			cursorY++;
+			break;
+		}		
+		if(cursorY >= cursorY_Max){ //if the columns ran out, then clean screen. PS. we cant use runtime allocate service yet, so we wont do scrolling.
+			CleanScreen();
+			cursorX = 0;
+			cursorY = 0;
+			break;
+		}
+
+		switch(current){
+			case ' ':{ //get a space
+				cursorX++;
+				break;
+			}
+			case '\n':{
+				cursorY++;
+				cursorX = 0;
+				break;
+			}
+			case '%':{
+
+				if(arg_num != 0){
+					if(next == 'd'){
+							char buffer[50];
+							int temp = va_arg(arg_list, int);
+							uint8 length = ToString(temp, buffer);
+							for(int i = length; i >= 0; i--){
+								PrintChar(buffer[i], color);
+								cursorX++;
+							}
+							arg_num--;
+					}else if(next == 's'){
+						char *temp = va_arg(arg_list, char*);
+						Print(temp);
+						arg_num--;
+					}
+				}
+				if(next == '%'){
+				PrintChar(current, color);
+				cursorX++;
+				}
+				size++;
+				break;
+			}
+			default:{
+				PrintChar(current, color);
+				cursorX++;
+				break;
+			}
+		}
+		size++; //next.
+	}
 }
+		
 
 void PrintChar(char letter, uint32 color)
 {

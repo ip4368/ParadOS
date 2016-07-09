@@ -41,8 +41,10 @@ extern "C" void main()
 	SetupCPU();
 	SetColor(0xadff2f);
 	Print((char *)"done\n");
-
-	Print((char *)"Insert %d lol\n", 12340);
+	SetColor(TERMINAL_DEFAULT_COLOR);
+	Print((char *)"Insert %d %s lol\n", 12340, "Hello");
+	Print((char *)"Insert %d %%s lol\n", 12340, "Hello");
+	Print((char *)"Text column.\n");
 
 	HaltCPU();
 }

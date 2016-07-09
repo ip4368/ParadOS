@@ -3,6 +3,8 @@
 
 #include "Types.h"
 
+#define TERMINAL_DEFAULT_COLOR 0xFFFFFF
+
 void TerminalSetup();
 void SetCursor(uint32 X, uint32 Y);
 void SetColor(uint32 c);
