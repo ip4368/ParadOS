@@ -12,5 +12,5 @@ bool IsLowerCase(char input);
 	Convert Operations
 */
 int ToString(int input, char buffer[]);
-
+int ToHexString(int input, char buffer[]);
 #endif

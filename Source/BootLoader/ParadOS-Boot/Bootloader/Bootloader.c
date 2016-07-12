@@ -28,7 +28,6 @@ typedef struct {
 
 typedef struct 
 {
-	UINT64 TotalPages;
 	POS_GRAPHICS_INFO *GraphicsInfo; 
 	
 }POS_BOOTLOADER_HEADER; 
@@ -54,7 +53,7 @@ UINT8 CheckProcess(EFI_STATUS status, UINT8 PrintError)
 }
 
 
-EFI_STATUS MemoryWork(UINT64 *TotalPages);
+EFI_STATUS MemoryWork(UINT64 *page_ptr);
 EFI_STATUS LoadFileFromTheDrive(IN CHAR16 *FileName, OUT VOID **Data, OUT UINTN *FileSize);
 EFI_STATUS GetMapKey(OUT UINTN *key);
 
@@ -67,7 +66,8 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	VOID *Buffer;
 	EFI_GRAPHICS_OUTPUT_PROTOCOL *GOP = NULL;
 	UINTN MapKey;
-	VOID (*entry)();
+	VOID (*entry)(UINT64 Page);
+	UINT64 TotalPages = 0;
 	POS_BOOTLOADER_HEADER *pos_Payload = (POS_BOOTLOADER_HEADER *)HDR_ADDR;
 
 	Print(L"ParadOS Bootloader ver. 1.0N\n");
@@ -98,7 +98,7 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	pos_Payload->GraphicsInfo->PixelFormat = GOP->Mode->Info->PixelFormat;
 
 	Print(L"Get memory infomation...");
-	status = MemoryWork(&pos_Payload->TotalPages);
+	status = MemoryWork(&TotalPages);
 	if(CheckProcess(status, 1)){
 		ST->BootServices->Exit(IH, EFI_SUCCESS, 0, NULL);
 	}
@@ -122,12 +122,12 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 		status = ST->BootServices->ExitBootServices(IH, MapKey);
 	}while(status != EFI_SUCCESS);
 
-	entry();//WHISPER: Get the fuck out of here pls.
+	entry(TotalPages);//WHISPER: Get the fuck out of here pls.
 
 	return EFI_SUCCESS; //Never go here, just let the compiler happy :)
 }
 
-EFI_STATUS MemoryWork(UINT64 *TotalPages){
+EFI_STATUS MemoryWork(UINT64 *page_ptr){
 
 	//lazy..
 	EFI_STATUS status;
@@ -155,11 +155,11 @@ EFI_STATUS MemoryWork(UINT64 *TotalPages){
 	}
 	UINTN max = MemMapSize / DesSize;
 
-	TotalPages = 0;
+	page_ptr = 0;
 	for(UINTN i = 0; i < max;i++){
 		EFI_MEMORY_DESCRIPTOR *temp = (EFI_MEMORY_DESCRIPTOR *)(((UINT8 *)MemMap) + (i * DesSize));
 		
-		TotalPages += temp->NumberOfPages;
+		page_ptr += temp->NumberOfPages;
 	}
 	return EFI_SUCCESS;
 

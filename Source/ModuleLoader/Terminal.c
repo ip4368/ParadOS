@@ -105,12 +105,13 @@ void Print(const char *text, ...)
 				break;
 			}
 			case '%':{
-
+				char buffer[50];
+				int temp;
+				uint8 length;
 				if(arg_num != 0){
 					if(next == 'd'){
-							char buffer[50];
-							int temp = va_arg(arg_list, int);
-							uint8 length = ToString(temp, buffer);
+							temp = va_arg(arg_list, int);
+							length = ToString(temp, buffer);
 							for(int i = length; i >= 0; i--){
 								PrintChar(buffer[i], color);
 								cursorX++;
@@ -120,6 +121,13 @@ void Print(const char *text, ...)
 						char *temp = va_arg(arg_list, char*);
 						Print(temp);
 						arg_num--;
+					}else if(next == 'x'){
+						temp = va_arg(arg_list, int);
+						length = ToHexString(temp, buffer);
+						for(int i = length; i >= 0; i--){
+								PrintChar(buffer[i], color);
+								cursorX++;
+							}
 					}
 				}
 				if(next == '%'){

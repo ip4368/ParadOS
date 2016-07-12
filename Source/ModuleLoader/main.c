@@ -16,17 +16,15 @@ typedef struct {
 
 typedef struct 
 {
-	POS_GRAPHICS_INFO *GraphicsInfo;
+	POS_GRAPHICS_INFO *GraphicsInfo; 
 	
-}POS_BOOTLOADER_HEADER;
+}POS_BOOTLOADER_HEADER; 
 
-extern "C" void main()
+extern "C" void main(int64 pageNumber)
 {
 
 	POS_BOOTLOADER_HEADER *bootloader_hdr = (POS_BOOTLOADER_HEADER *)0x8000;
 	POS_GRAPHICS_INFO *graphics_info = bootloader_hdr->GraphicsInfo;
-	//POS_MEMORY_INFO *memory_info = bootloader_hdr->MemoryInfo;
-
 	//Make sure video functional frist, easy to debug.*JK*
 	GraphicsSetup(graphics_info->HResolution, graphics_info->VResolution, graphics_info->FrameBufferBase, graphics_info->FrameBufferSize, graphics_info->PixelsPerScanLine, graphics_info->PixelFormat);
 	TerminalSetup();
@@ -35,17 +33,16 @@ extern "C" void main()
 
 	//Greeting
 	//Customizable Operating System
-	Print((char *)"Wellcome to ParadOS!\n\n");
-	Print((char *)"Setting up the hardware...");
+	Print("Wellcome to ParadOS!\n\n");
+	Print("Setting up the hardware...");
 
 	SetupCPU();
 	SetColor(0xadff2f);
-	Print((char *)"done\n");
+	Print("done\n");
 	SetColor(TERMINAL_DEFAULT_COLOR);
-	Print((char *)"Insert %d %s lol\n", 12340, "Hello");
-	Print((char *)"Insert %d %%s lol\n", 12340, "Hello");
-	Print((char *)"Text column.\n");
-
+	Print("PageNumber: %x\n", pageNumber);
+	Print("MemorySize: %x KiB", pageNumber*4);
+	
 	HaltCPU();
 }
 

@@ -62,10 +62,19 @@ int ToString(int input, char buffer[]){
 	buffer[i] = '\0';
 	return i;
 }
-/*
-char* ToString(bool input){
 
+int ToHexString(int input, char buffer[]){
+	char ref[] = "0123456789ABCDEF";
+	int temp = 0;
+	int i = 0;
+
+	while(input != 0){
+		temp = input % 16;
+		buffer[i++] = ref[temp];
+		input /= 16;
+	}
+	return i;
 }
-
+/*
 char ToChar(unsigned)
 */
