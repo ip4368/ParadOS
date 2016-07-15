@@ -63,16 +63,17 @@ int ToString(int input, char buffer[]){
 	return i;
 }
 
-int ToHexString(int input, char buffer[]){
-	char ref[] = "0123456789ABCDEF";
+int ToHexString(int input, char buff[]){
+
+	char ref[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
 	int temp = 0;
 	int i = 0;
-
-	while(input != 0){
-		temp = input % 16;
-		buffer[i++] = ref[temp];
-		input /= 16;
-	}
+	int q = input;
+	do{
+		temp = q % 16;
+		buff[i++] = ref[temp];
+	}while((q /= 16) > 0);
+	buff[i] = '\0';
 	return i;
 }
 /*

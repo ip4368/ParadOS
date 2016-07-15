@@ -67,7 +67,7 @@ void Print(const char *text, ...)
 		char current = text[size];
 		char next = text[size + 1];
 		if(current == '%'){
-			if(next == 's' || next == 'd'){
+			if(next == 's' || next == 'd' || next == 'x'){
 				arg_num++;
 				size++; //jump over 2 letter
 			}
@@ -107,7 +107,7 @@ void Print(const char *text, ...)
 			case '%':{
 				char buffer[50];
 				int temp;
-				uint8 length;
+				int length;
 				if(arg_num != 0){
 					if(next == 'd'){
 							temp = va_arg(arg_list, int);
@@ -118,16 +118,18 @@ void Print(const char *text, ...)
 							}
 							arg_num--;
 					}else if(next == 's'){
-						char *temp = va_arg(arg_list, char*);
-						Print(temp);
+						char *tempString = va_arg(arg_list, char*);
+						Print(tempString);
 						arg_num--;
 					}else if(next == 'x'){
 						temp = va_arg(arg_list, int);
+							Print("%d", temp);
 						length = ToHexString(temp, buffer);
-						for(int i = length; i >= 0; i--){
-								PrintChar(buffer[i], color);
-								cursorX++;
-							}
+						Print("%d", length);
+							for(;length > 0; length--){
+								PrintChar(buffer[length], TERMINAL_DEFAULT_COLOR);
+							}	
+							arg_num--;
 					}
 				}
 				if(next == '%'){

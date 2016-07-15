@@ -3,7 +3,7 @@ edk2/
 unix/
 windows/
 #Ignore Output
-ModuleLoader
+Source/ModuleLoader/ModuleLoader
 
 # Compiled Object files
 *.slo

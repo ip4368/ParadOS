@@ -20,7 +20,7 @@ typedef struct
 	
 }POS_BOOTLOADER_HEADER; 
 
-extern "C" void main(int64 pageNumber)
+extern "C" void main()//int64 pageNumber
 {
 
 	POS_BOOTLOADER_HEADER *bootloader_hdr = (POS_BOOTLOADER_HEADER *)0x8000;
@@ -40,9 +40,8 @@ extern "C" void main(int64 pageNumber)
 	SetColor(0xadff2f);
 	Print("done\n");
 	SetColor(TERMINAL_DEFAULT_COLOR);
-	Print("PageNumber: %x\n", pageNumber);
-	Print("MemorySize: %x KiB", pageNumber*4);
-	
+	Print("%d", 1234567890);
+	Print("%x", 4096); //still have no closer
 	HaltCPU();
 }
 

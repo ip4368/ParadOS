@@ -9,5 +9,5 @@ void TerminalSetup();
 void SetCursor(uint32 X, uint32 Y);
 void SetColor(uint32 c);
 void Print(const char *text, ...);
-
+void PrintChar(char letter, uint32 color);
 #endif
