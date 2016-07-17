@@ -1,6 +1,6 @@
 
 #include "Library/String.h"
-
+#include "ModuleLoader/Terminal.h"
 uint64 strlen(char *in)
 {
 	uint64 result = 0;
@@ -59,21 +59,21 @@ int ToString(int input, char buffer[]){
 	if(input < 0){
 		buffer[i++] = '-';
 	}
-	buffer[i] = '\0';
 	return i;
 }
 
-int ToHexString(int input, char buff[]){
-
+int ToHexString(int input, char buffer[]){
 	char ref[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-	int temp = 0;
 	int i = 0;
-	int q = input;
-	do{
-		temp = q % 16;
-		buff[i++] = ref[temp];
-	}while((q /= 16) > 0);
-	buff[i] = '\0';
+	while(input >= 0){
+		if(input < 16){
+			buffer[i++] = ref[input];
+			break;
+		}
+		buffer[i++] = ref[input%16];
+		input /= 16;
+	}
+
 	return i;
 }
 /*

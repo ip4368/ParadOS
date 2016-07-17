@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"i",
+				"i"
+			],
+			[
+				"TO",
+				"ToString"
+			],
+			[
 				"bu",
 				"buff"
 			],
@@ -215,6 +223,30 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "Source/ModuleLoader/Terminal.c",
+			"settings":
+			{
+				"buffer_size": 5387,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "Source/ModuleLoader/main.c",
+			"settings":
+			{
+				"buffer_size": 1161,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Source/Library/String.c",
+			"settings":
+			{
+				"buffer_size": 1284,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -250,6 +282,13 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Library",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader"
+	],
 	"file_history":
 	[
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/main.c",
@@ -338,8 +377,96 @@
 	"groups":
 	[
 		{
+			"selected": 2,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "Source/ModuleLoader/Terminal.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5387,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2832,
+								2838
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 139.0,
+						"translation.y": 1824.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "Source/ModuleLoader/main.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1161,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1145,
+								1145
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": -0.0,
+						"translation.y": 456.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Source/Library/String.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1284,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1219,
+								1219
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 855.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],

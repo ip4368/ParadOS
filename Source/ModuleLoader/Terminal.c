@@ -123,11 +123,10 @@ void Print(const char *text, ...)
 						arg_num--;
 					}else if(next == 'x'){
 						temp = va_arg(arg_list, int);
-							Print("%d", temp);
 						length = ToHexString(temp, buffer);
-						Print("%d", length);
-							for(;length > 0; length--){
-								PrintChar(buffer[length], TERMINAL_DEFAULT_COLOR);
+							for(int i = length - 1;i >= 0; i--){
+								PrintChar(buffer[i], TERMINAL_DEFAULT_COLOR);
+								cursorX++;
 							}	
 							arg_num--;
 					}
