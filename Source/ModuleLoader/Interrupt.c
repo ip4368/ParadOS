@@ -1,6 +1,6 @@
 #include "Moduleloader/PIC.h"
 
-void SetupAPIC(){
+void InitAPIC(){
 	//
 	//Check APIC availbale
 	//

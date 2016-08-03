@@ -3,7 +3,7 @@
 
 #include "Types.h"
 	
-	void GraphicsSetup(uint32 HR,uint32 VR,uint64 FBB,uint64 FBS, uint32 PPSL, uint8 PF);
+	void InitGraphics(uint32 HR,uint32 VR,uint64 FBB,uint64 FBS, uint32 PPSL, uint8 PF);
 	void CleanScreen();
 	void CleanScreen(uint32 color);
 	void DrawPixel(uint64 x, uint64 y, uint32 color);

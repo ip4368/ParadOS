@@ -8,7 +8,7 @@
 	uint32 PixelsPerScanLine;
 	uint8 PixelFormat;
 
-void GraphicsSetup(uint32 HR,uint32 VR,uint64 FBB,uint64 FBS, uint32 PPSL, uint8 PF)
+void InitGraphics(uint32 HR,uint32 VR,uint64 FBB,uint64 FBS, uint32 PPSL, uint8 PF)
 {
 	FB = (uint32 *)FBB;
 	FrameBufferSize = FBS;

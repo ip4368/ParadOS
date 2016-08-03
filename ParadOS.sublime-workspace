@@ -4,6 +4,26 @@
 		"selected_items":
 		[
 			[
+				"chec",
+				"CheckProcess"
+			],
+			[
+				"line",
+				"line_signal2"
+			],
+			[
+				"EFI",
+				"EFI_MEMORY_DESCRIPTOR"
+			],
+			[
+				"int",
+				"input"
+			],
+			[
+				"CU",
+				"cursorX"
+			],
+			[
 				"i",
 				"i"
 			],
@@ -152,10 +172,6 @@
 				"UINT64"
 			],
 			[
-				"EFI",
-				"EFI_SUCCESS"
-			],
-			[
 				"Boot",
 				"BootServices"
 			],
@@ -223,30 +239,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "Source/ModuleLoader/Terminal.c",
-			"settings":
-			{
-				"buffer_size": 5387,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "Source/ModuleLoader/main.c",
-			"settings":
-			{
-				"buffer_size": 1161,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Source/Library/String.c",
-			"settings":
-			{
-				"buffer_size": 1284,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -255,7 +247,7 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 104.0,
+		"height": 86.0,
 		"last_filter": "Package Control: insta",
 		"selected_items":
 		[
@@ -264,7 +256,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 325.0
+		"width": 382.0
 	},
 	"console":
 	{
@@ -285,18 +277,22 @@
 	"expanded_folders":
 	[
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Library",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader"
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Tools",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Tools/edk2",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Tools/edk2/ParadOS-Boot",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Tools/edk2/ParadOS-Boot/Bootloader"
 	],
 	"file_history":
 	[
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Tools/edk2/ParadOS-Boot/Bootloader/Bootloader.c",
+		"/C/Users/IAZE/Desktop/mbot_race_w_o_error_correction/mbot_race_w_o_error_correction.ino",
+		"/F/mbot_race/mbot_race_w_o_error_correction/mbot_race_w_o_error_correction.ino",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/main.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Library/String.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/Types.h",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Terminal.c",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Terminal.h",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Library/String.c",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/Library/String.h",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Tools/edk2/ParadOS-Boot/Bootloader/Bootloader.c",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Graphics.c",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/BootLoader/ParadOS-Boot/Bootloader/Bootloader.c",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Tools/edk2/Conf/target.txt",
@@ -307,7 +303,6 @@
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Dear.Linker",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/CPU.c",
 		"/C/Users/IAZE/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/Types.h",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Graphics.h",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/CPU.h",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Interrupt.h",
@@ -341,6 +336,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"MemMap",
+			"temp",
+			"q",
 			"input",
 			"arg_list",
 			"//yup success~!",
@@ -377,96 +375,8 @@
 	"groups":
 	[
 		{
-			"selected": 2,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "Source/ModuleLoader/Terminal.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5387,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2832,
-								2838
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 139.0,
-						"translation.y": 1824.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "Source/ModuleLoader/main.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1161,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1145,
-								1145
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": -0.0,
-						"translation.y": 456.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "Source/Library/String.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1284,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1219,
-								1219
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 855.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],

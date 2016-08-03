@@ -46,8 +46,13 @@
 //30-31 --reserved
 
 ////Functions////
-void SetupCPU();
+void InitCPU();
+
+bool SupportCPUID();
+bool SupportCPUFeature(uint32 functions);
+
 uint64 GetMSR(uint32 msr_number);
+
 void HaltCPU();
 
 ////Variables////

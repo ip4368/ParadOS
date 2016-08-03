@@ -5,7 +5,7 @@
 
 #define TERMINAL_DEFAULT_COLOR 0xFFFFFF
 
-void TerminalSetup();
+void InitTerminal();
 void SetCursor(uint32 X, uint32 Y);
 void SetColor(uint32 c);
 void Print(const char *text, ...);

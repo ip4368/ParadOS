@@ -2,8 +2,9 @@
 
 uint32 CPU_VENDOR = 0;
 uint32 CPU_FEATURES = 0;
+bool CPUID_Supported = false;
 
-void SetupCPU(){
+void InitCPU(){
 	//We will keep using this two variable in functions.
 	uint32 result = 0;
 	uint32 useless = 0;
@@ -16,6 +17,8 @@ void SetupCPU(){
 		//if eax == 0, then CPUID_Support = false;
 		Panic((char *)"CPUID did not supported.\n", PANIC_LEVEL_TWO);
 		HaltCPU();
+	}else{
+		CPUID_Supported = true;
 	}//support!
 
 	//
@@ -47,7 +50,7 @@ void SetupCPU(){
 	__cpuid(0x80000001, useless, useless, useless, result);
 	if(!(result & bit_LM)){ //Thanks for the cpuid.h, make me work ez
 		//Well..not the normal way.
-		Panic((char *)"Omfg! You are not in long mode!\n", PANIC_LEVEL_TWO);
+		Panic((char *)"OMFG! You are not in long mode!\n", PANIC_LEVEL_TWO);
 		HaltCPU();
 	}//We are in long mode
 
@@ -60,6 +63,17 @@ void SetupCPU(){
 		HaltCPU();
 	}	
 
+}
+
+bool SupportCPUID(){
+	return CPUID_Supported;
+}
+
+bool SupportCPUFeature(uint32 functions){
+	if(CPU_FEATURES & functions){
+		return true;
+	}
+	return false;
 }
 
 uint64 GetMSR(uint32 msr_number){

@@ -26,8 +26,8 @@ extern "C" void main(uint64 pageNumber)
 	POS_BOOTLOADER_HEADER *bootloader_hdr = (POS_BOOTLOADER_HEADER *)0x8000;
 	POS_GRAPHICS_INFO *graphics_info = bootloader_hdr->GraphicsInfo;
 	//Make sure video functional frist, easy to debug.*JK*
-	GraphicsSetup(graphics_info->HResolution, graphics_info->VResolution, graphics_info->FrameBufferBase, graphics_info->FrameBufferSize, graphics_info->PixelsPerScanLine, graphics_info->PixelFormat);
-	TerminalSetup();
+	InitGraphics(graphics_info->HResolution, graphics_info->VResolution, graphics_info->FrameBufferBase, graphics_info->FrameBufferSize, graphics_info->PixelsPerScanLine, graphics_info->PixelFormat);
+	InitTerminal();
 
 	CleanScreen();//Clean sscreen
 
@@ -36,7 +36,7 @@ extern "C" void main(uint64 pageNumber)
 	Print("Wellcome to ParadOS!\n\n");
 	Print("Setting up the hardware...");
 
-	SetupCPU();
+	InitCPU();
 	SetColor(0xadff2f);
 	Print("done\n");
 	SetColor(TERMINAL_DEFAULT_COLOR);
