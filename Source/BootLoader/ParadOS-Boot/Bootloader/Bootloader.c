@@ -1,6 +1,6 @@
-//AH! AH! AH! windows compiler sucks!
+//windows compiler sucks!
 #pragma warning(disable:4152) //just make windows compiler happy
-//im gonna using windows C compiler, because the efi file size is much lighter.
+//im gonna using windows C compiler, because the output file size is much lighter.
 #pragma warning(disable:4702)
 
 #include <Uefi.h>
@@ -15,22 +15,24 @@
 #include <Guid/FileInfo.h>
 
 #define ML_ADDR 0x100000
-#define HDR_ADDR 0x8000
 
-typedef struct {
-	UINT32 HResolution; 
-	UINT32 VResolution; 
-	UINTN FrameBufferBase; 
-	UINTN FrameBufferSize; 
-	UINT32 PixelsPerScanLine; 
-	UINT8 PixelFormat; 
-} POS_GRAPHICS_INFO; 
+typedef struct{
+//GOP
+UINT32 HResolution; //4
+UINT32 VResolution;//4
+UINT64 FrameBufferBase;//8
+UINT64 FrameBufferSize;//8
+UINT32 PixelPerScanLine;//4
+UINT8 ColorFormat;//4
+//Memmory
+UINT64 Page_Number;//8
+//ACPI
 
-typedef struct 
-{
-	POS_GRAPHICS_INFO *GraphicsInfo; 
-	
-}POS_BOOTLOADER_HEADER; 
+//Partitions
+UINT32 Partition_number;//4
+UINT64 *Partition_table;//8
+
+} POS_PAYLOAD;//49 byte, btw fuck u windows compiler
 
 UINT8 CheckProcess(EFI_STATUS status, UINT8 PrintError)
 {
@@ -53,7 +55,7 @@ UINT8 CheckProcess(EFI_STATUS status, UINT8 PrintError)
 }
 
 
-EFI_STATUS MemoryWork(UINT64 *page_ptr);
+EFI_STATUS MemoryWork(UINT64 *pages_Number);
 EFI_STATUS LoadFileFromTheDrive(IN CHAR16 *FileName, OUT VOID **Data, OUT UINTN *FileSize);
 EFI_STATUS GetMapKey(OUT UINTN *key);
 
@@ -66,17 +68,24 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	VOID *Buffer;
 	EFI_GRAPHICS_OUTPUT_PROTOCOL *GOP = NULL;
 	UINTN MapKey;
-	VOID (*entry)(UINT64 Page);
-	UINT64 TotalPages = 0;
-	POS_BOOTLOADER_HEADER *pos_Payload = (POS_BOOTLOADER_HEADER *)HDR_ADDR;
+	VOID (*entry)();
+	POS_PAYLOAD *pos_Payload = (POS_PAYLOAD *)0x8000;
 
 	Print(L"ParadOS Bootloader ver. 1.0N\n");
 
+	//Allocate some page for our payload.
+	/*
+	Print(L"Allocating...");
+	status = ST->BootServices->AllocatePool(EfiLoaderData, sizeof(POS_PAYLOAD), (VOID **)&pos_Payload);
+	if(CheckProcess(status, 1)){
+		ST->BootServices->Exit(IH, status, 0, NULL);
+	}
+*/
 	//Load Loader
 	Print(L"Loading the ModuleLoader...");
 	status = LoadFileFromTheDrive(L"\\Loader\\ModuleLoader", &Buffer, &LoaderSize);
 	if(CheckProcess(status, 1)) {
-		ST->BootServices->Exit(IH, EFI_SUCCESS, 0, NULL);
+		ST->BootServices->Exit(IH, status, 0, NULL);
 	}
 	Print(L"Loader Size: %d byte\n", LoaderSize);
 
@@ -88,51 +97,62 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	Print(L"Get GOP infomation...");
 	status = ST->BootServices->LocateProtocol(&gEfiGraphicsOutputProtocolGuid, NULL, (VOID **)&GOP);
 	if(CheckProcess(status, 1)) {
-		ST->BootServices->Exit(IH, EFI_SUCCESS, 0, NULL);
+		
 	}
-	pos_Payload->GraphicsInfo->HResolution = GOP->Mode->Info->HorizontalResolution;
-	pos_Payload->GraphicsInfo->VResolution = GOP->Mode->Info->VerticalResolution;
-	pos_Payload->GraphicsInfo->FrameBufferBase = GOP->Mode->FrameBufferBase;
-	pos_Payload->GraphicsInfo->FrameBufferSize = GOP->Mode->FrameBufferSize;
-	pos_Payload->GraphicsInfo->PixelsPerScanLine = GOP->Mode->Info->PixelsPerScanLine;
-	pos_Payload->GraphicsInfo->PixelFormat = GOP->Mode->Info->PixelFormat;
+	pos_Payload->HResolution = GOP->Mode->Info->HorizontalResolution;
+	pos_Payload->VResolution = GOP->Mode->Info->VerticalResolution;
+	pos_Payload->FrameBufferBase = GOP->Mode->FrameBufferBase;
+	pos_Payload->FrameBufferSize = GOP->Mode->FrameBufferSize;
+	pos_Payload->PixelPerScanLine = GOP->Mode->Info->PixelsPerScanLine;
+	pos_Payload->ColorFormat = GOP->Mode->Info->PixelFormat;
+	
 
-	Print(L"Get memory infomation...");
-	status = MemoryWork(&TotalPages);
+	Print(L"Memory Work...");
+	status = MemoryWork(&(pos_Payload->Page_Number));
 	if(CheckProcess(status, 1)){
-		ST->BootServices->Exit(IH, EFI_SUCCESS, 0, NULL);
+		ST->BootServices->Exit(IH, status, 0, NULL);
 	}
 
 	Print(L"Passing control...\n");
 	Print(L"If you stuck, that mean ParadOS fail to start.");
+	
+	
 	/*
 	LOGIC:
 		Get memory map frist, then call the ExitBootServices.
 		After that, check if everything fine, if true pass control.
 		Otherwise, call it again. 
-		Until its true.
+		Until its done.
 	*/
-	UINT8 i = 0;//Common counter on the earth.
+	UINT8 i = 0;
 	do{
 		i++;
 		if(i == 3){
-			ST->BootServices->Exit(IH, EFI_SUCCESS, 0, NULL);
+			ST->BootServices->Exit(IH, status, 0, NULL);
 		}
 		GetMapKey(&MapKey);//should not do anything before calling the ExitBootServices, these operation might destory the accuracy of memory map.
 		status = ST->BootServices->ExitBootServices(IH, MapKey);
 	}while(status != EFI_SUCCESS);
 
-	entry(TotalPages);//WHISPER: Get the fuck out of here pls.
+	/*
+	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	!!!!!!!!!!!!!!!!FULL CONTROL AREA!!!!!!!!!!!!!!!!!!!!
+	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	*/
+
+	entry();//Get the fuck out of here!
 
 	return EFI_SUCCESS; //Never go here, just let the compiler happy :)
 }
 
-EFI_STATUS MemoryWork(UINT64 *page_ptr){
+EFI_STATUS MemoryWork(UINT64 *pages_Number){
 
 	//lazy..
 	EFI_STATUS status;
 	EFI_MEMORY_DESCRIPTOR *MemMap = NULL; //point to nothing
-	UINTN MemMapSize = sizeof(EFI_MEMORY_DESCRIPTOR) * 29;
+	UINTN MemMapSize = sizeof(EFI_MEMORY_DESCRIPTOR);
 	UINTN DesSize = 0;
 	UINT32 DesVersion;
 	UINTN MapKey;
@@ -154,15 +174,11 @@ EFI_STATUS MemoryWork(UINT64 *page_ptr){
 	}
 	}
 	UINTN max = MemMapSize / DesSize;
-
-	page_ptr = 0;
 	for(UINTN i = 0; i < max;i++){
 		EFI_MEMORY_DESCRIPTOR *temp = (EFI_MEMORY_DESCRIPTOR *)(((UINT8 *)MemMap) + (i * DesSize));
-		
-		page_ptr += temp->NumberOfPages;
+		*pages_Number += temp->NumberOfPages;
 	}
 	return EFI_SUCCESS;
-
 }
 
 EFI_STATUS GetMapKey(UINTN *key)

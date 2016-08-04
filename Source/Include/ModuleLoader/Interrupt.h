@@ -5,6 +5,6 @@
 #include "ErrorLevels.h"
 
 ////Function////
-void InitAPIC();
+void SetupAPIC();
 
 #endif

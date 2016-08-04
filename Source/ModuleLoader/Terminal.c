@@ -12,8 +12,8 @@
 #define LETTER_SIZE_X 14
 #define LETTER_SIZE_Y 16
 
-uint32 cursorX = 0;
-uint32 cursorY = 0;
+uint32 cursorX;
+uint32 cursorY;
 
 uint32 color = TERMINAL_DEFAULT_COLOR;
 
@@ -21,8 +21,10 @@ uint32 cursorY_Max = 0;
 uint32 cursorX_Max = 0;
 void PrintChar(char letter, uint32 color);
 
-void InitTerminal()
+void TerminalSetup()
 {
+	cursorX = 0;
+	cursorY = 0;
 
 	if(GetHResolution() % LETTER_SIZE_X){//if resolution is odd number than reserve 1 word of the end of X
 		cursorX_Max =  (GetHResolution() / LETTER_SIZE_X) - 1;
@@ -123,7 +125,7 @@ void Print(const char *text, ...)
 						temp = va_arg(arg_list, int);
 						length = ToHexString(temp, buffer);
 							for(int i = length - 1;i >= 0; i--){
-								PrintChar(buffer[i], TERMINAL_DEFAULT_COLOR);
+								PrintChar(buffer[i], color);
 								cursorX++;
 							}	
 							arg_num--;
@@ -144,6 +146,7 @@ void Print(const char *text, ...)
 		}
 		size++; //next.
 	}
+	color = TERMINAL_DEFAULT_COLOR;
 }
 		
 
