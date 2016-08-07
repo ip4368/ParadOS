@@ -5,26 +5,22 @@ SECTIONS
 {
 . = 1M;
 
-.text :
+.text : AT(ADDR(.text) - 1M)
 {
-    portal.o(.text)
+	portal.o(.text)
     *(.text)   
+    . = ALIGN(4096);
 }
 
-.data :
+.data : AT(ADDR(.data) - 1M)
 {
     *(.data)
+    . = ALIGN(4096);
 }
 
-.rodata :
-{
-    *(.rodata)
-}
-
-.bss :
+.bss : AT(ADDR(.bss) - 1M)
 {
     *(.bss)
+    . = ALIGN(4096);
 }
-
-
 }

@@ -1,6 +1,6 @@
 
 #include "ModuleLoader/Terminal.h"
-#include "ModuleLoader/Font.h"
+#include "ModuleLoader/Font2.h"
 #include "Library/String.h"
 #include "ModuleLoader/Graphics.h"
 #include <stdarg.h>
@@ -9,7 +9,7 @@
 #define UPPER_INDEX 33
 #define LOWER_INDEX 65
 
-#define LETTER_SIZE_X 15
+#define LETTER_SIZE_X 16
 #define LETTER_SIZE_Y 16
 
 uint32 cursorX;
@@ -84,7 +84,7 @@ void Print(const char *text, ...)
 		//check position
 		if(cursorX >= cursorX_Max){ //if current row is at the end, then break.
 			cursorX = 0;
-			cursorY++;
+			cursorY ++;
 			break;
 		}		
 		if(cursorY >= cursorY_Max){ //if the columns ran out, then clean screen. PS. we cant use runtime allocate service yet, so we wont do scrolling.
@@ -96,11 +96,11 @@ void Print(const char *text, ...)
 
 		switch(current){
 			case ' ':{ //get a space
-				cursorX++;
+				cursorX ++;
 				break;
 			}
 			case '\n':{
-				cursorY++;
+				cursorY ++;
 				cursorX = 0;
 				break;
 			}
@@ -114,7 +114,7 @@ void Print(const char *text, ...)
 							length = ToString(temp, buffer);
 							for(int i = length; i >= 0; i--){
 								PrintChar(buffer[i], color);
-								cursorX++;
+								cursorX ++;
 							}
 							arg_num--;
 					}else if(next == 's'){
@@ -126,21 +126,21 @@ void Print(const char *text, ...)
 						length = ToHexString(temp, buffer);
 							for(int i = length - 1;i >= 0; i--){
 								PrintChar(buffer[i], color);
-								cursorX++;
+								cursorX ++;
 							}	
 							arg_num--;
 					}
 				}
 				if(next == '%'){
 				PrintChar(current, color);
-				cursorX++;
+				cursorX ++;
 				}
 				size++;
 				break;
 			}
 			default:{
 				PrintChar(current, color);
-				cursorX++;
+				cursorX ++;
 				break;
 			}
 		}
@@ -155,7 +155,6 @@ void PrintChar(char letter, uint32 color)
 	int index = 0;
 	int TempX = 0;
 	int TempY = 0;
-	uint8 *TempArray;
 	if(IsLetter(letter)) {
 		if(IsUpperCase(letter)) {
 			index = (int)letter - (int)'A' + UPPER_INDEX;
@@ -196,11 +195,11 @@ void PrintChar(char letter, uint32 color)
 			break;
 
 		case ')':
-			index = 8;
+			index = 9;
 			break;
 
 		case '(':
-			index = 9;
+			index = 8;
 			break;
 
 		case '*':
@@ -302,30 +301,17 @@ void PrintChar(char letter, uint32 color)
 		}
 	}
 
-	TempArray = Font_Data[index];
-
-	for(int col = 0; col <= 7; col++) {
+	for(int col = 0; col <= 32; col++) {
 		TempX = 0;
-		uint8 TempData = TempArray[col];
-		for(int row = 0; row <= 7; row++) {
+		for(int row = 0; row <= 16; row++) {
+			//uint32 pixel = TempArray[i];
 
-			if(TempData >= 128) { //2^8
-					
-					//DrawPixel(cursorX * LETTER_SIZE_X + TempX, cursorY * LETTER_SIZE_Y + TempY, color);
-
-					DrawPixel(cursorX * LETTER_SIZE_X + TempX, cursorY * LETTER_SIZE_Y + TempY, color);
-					DrawPixel(cursorX * LETTER_SIZE_X + TempX + 1, cursorY * LETTER_SIZE_Y + TempY, color);
-
-					DrawPixel(cursorX * LETTER_SIZE_X + TempX, cursorY * LETTER_SIZE_Y + TempY +1, color);
-					DrawPixel(cursorX * LETTER_SIZE_X + TempX + 1, cursorY * LETTER_SIZE_Y + TempY + 1, color);
-
-				
+			if((uint16)Font32[index * 1024 + col * 32 + row * 2] != 0x0){
+			DrawPixel(cursorX * LETTER_SIZE_X + TempX, cursorY * LETTER_SIZE_Y + TempY, color);
 			}
-			TempX += 2;
-			TempData <<= 1; //shift to the left
-
+			TempX++;
 		}
-		TempY += 2;
+		TempY++;
 	}
 
 

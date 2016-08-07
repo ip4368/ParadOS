@@ -8,7 +8,9 @@
 	uint32 PixelsPerScanLine;
 	uint8 PixelFormat;
 
-void GraphicsSetup(uint32 HR,uint32 VR,uint64 FBB,uint64 FBS, uint32 PPSL, uint8 PF)
+	uint32 LastColor = 0;
+
+void SetupGraphics(uint32 HR,uint32 VR,uint64 FBB,uint64 FBS, uint32 PPSL, uint8 PF)
 {
 	FB = (uint32 *)FBB;
 	FrameBufferSize = FBS;
@@ -29,9 +31,17 @@ void CleanScreen(uint32 color)
 	for(uint64 i=0; i<=FrameBufferSize; i++) {
 		FB[i] = color;
 	}
+	LastColor = color;
 
 }
-
+void SetBackgroundColor(uint32 color){
+	for(uint64 i=0; i<=FrameBufferSize; i++) {
+		if(FB[i] == LastColor){
+		FB[i] = color;
+		}
+	}
+	LastColor = color;
+}
 void DrawPixel(uint64 x, uint64 y, uint32 color)
 {
 	if(IsVaildPosition(x, y)) {

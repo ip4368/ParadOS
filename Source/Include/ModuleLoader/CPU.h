@@ -2,10 +2,9 @@
 #define _MODULELOADER_CPU_H_
 
 #include "Types.h"
-#include "ModuleLoader/Panic.h"
 #include "ErrorLevels.h"
+#include "ModuleLoader/Terminal.h"
 #include <cpuid.h>
-
 
 ////Defines////
 #define INTEL_CPU 0x00000001
@@ -50,8 +49,9 @@ void SetupCPU();
 uint64 GetMSR(uint32 msr_number);
 void HaltCPU();
 
+/*
 ////Variables////
 extern uint32 CPU_VENDOR;
-extern uint32 CPU_FEATURES;
+extern uint32 CPU_FEATURES;*/
 
 #endif

@@ -14,7 +14,7 @@ void SetupCPU(){
 	__cpuid(0x0, result, (*cpu_string), (*(cpu_string+1)), (*(cpu_string+2)));
 	if(!result){
 		//if eax == 0, then CPUID_Support = false;
-		Panic((char *)"CPUID did not supported.\n", PANIC_LEVEL_TWO);
+		Print("CPUID is not supported.\n");
 		HaltCPU();
 	}//support!
 
@@ -35,31 +35,21 @@ void SetupCPU(){
 	__cpuid(0x80000000, result, useless, useless, useless);
 	if(!result){
 		//if eax == 0, then CPUID_Ext._Support = false;
-		Panic((char *)"CPUID Ext. did not supported.\n", PANIC_LEVEL_TWO);
+		SetColor(0xFF1493);
+		Print("CPUID Ext. is not supported.\n");
 		HaltCPU();
 	}//support!
-
-	//
-	//If the system enter in normal way(uefi), 
-	//it will enter long mode and paging enabled. 
-	//But we need to check that and make sure everything is ok
-	//
-	__cpuid(0x80000001, useless, useless, useless, result);
-	if(!(result & bit_LM)){ //Thanks for the cpuid.h, make me work ez
-		//Well..not the normal way.
-		Panic((char *)"Omfg! You are not in long mode!\n", PANIC_LEVEL_TWO);
-		HaltCPU();
-	}//We are in long mode
 
 	//
 	//Get CPU feature flag
 	//
 	__cpuid(0x1, useless, useless, useless, CPU_FEATURES); //we only need edx
 	if(CPU_FEATURES == 0){
-		Panic((char *)"Cant get cpu feature flags.\n", PANIC_LEVEL_TWO);
-		HaltCPU();
-	}	
-
+		SetColor(0xFF1493);
+		Print("Cant get cpu feature flags.\n");
+		HaltCPU();	
+	}
+		
 }
 
 uint64 GetMSR(uint32 msr_number){
