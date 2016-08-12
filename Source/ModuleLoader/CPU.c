@@ -3,11 +3,13 @@
 uint32 CPU_VENDOR = 0;
 uint32 CPU_FEATURES = 0;
 
+
 void SetupCPU(){
 	//We will keep using this two variable in functions.
 	uint32 result = 0;
 	uint32 useless = 0;
 	uint32 cpu_string[3] = {0,0,0};
+	
 	//
 	//Check is CPUID support though checking the highest function number
 	//
@@ -49,7 +51,16 @@ void SetupCPU(){
 		Print("Cant get cpu feature flags.\n");
 		HaltCPU();	
 	}
-		
+
+	uint64 msr = GetMSR(0xc0000080);
+	if(msr & 1<<10){//lma
+		Print("Long mode active\n");
+	}else{
+		SetColor(0xff0000);
+		Print("Long mode was not actived\n");
+		HaltCPU();
+	}
+
 }
 
 uint64 GetMSR(uint32 msr_number){

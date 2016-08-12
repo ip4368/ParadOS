@@ -11,6 +11,15 @@ bool IsLowerCase(char input);
 /*
 	Convert Operations
 */
-int ToString(int input, char buffer[]);
-int ToHexString(int input, char buff[]);
+int ToString(int8 input, char buffer[]);
+int ToString(int16 input, char buffer[]);
+int ToString(int32 input, char buffer[]);
+int ToString(int64 input, char buffer[]);
+
+int ToString(uint8 input, char buffer[]);
+int ToString(uint16 input, char buffer[]);
+int ToString(uint32 input, char buffer[]);
+int ToString(uint64 input, char buffer[]);
+
+int ToHexString(int64 input, char buff[]);
 #endif

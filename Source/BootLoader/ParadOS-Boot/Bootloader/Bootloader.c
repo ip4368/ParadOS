@@ -15,6 +15,7 @@
 #include <Guid/FileInfo.h>
 
 #define ML_ADDR 0x100000
+#define PLADD 0x90000
 
 typedef struct{
 //GOP
@@ -31,7 +32,9 @@ UINT64 Page_Number;//8
 //Partitions
 UINT32 Partition_number;//4
 UINT64 *Partition_table;//8
-
+//UEFI services
+EFI_RUNTIME_SERVICES *RuntimeServices;
+EFI_CONFIGURATION_TABLE *ConfigurationTable;
 } POS_PAYLOAD;//49 byte, btw fuck u windows compiler
 
 UINT8 CheckProcess(EFI_STATUS status, UINT8 PrintError)
@@ -55,9 +58,8 @@ UINT8 CheckProcess(EFI_STATUS status, UINT8 PrintError)
 }
 
 
-EFI_STATUS MemoryWork(UINT64 *pages_Number);
+EFI_STATUS MemoryWork(UINT64 *Key, UINT32 *DesVersion, UINT64 *DesSize, EFI_MEMORY_DESCRIPTOR *Memmap, UINT64 *MemmapSize);
 EFI_STATUS LoadFileFromTheDrive(IN CHAR16 *FileName, OUT VOID **Data, OUT UINTN *FileSize);
-EFI_STATUS GetMapKey(OUT UINTN *key);
 
 EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 {
@@ -67,20 +69,17 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	UINTN LoaderSize;
 	VOID *Buffer;
 	EFI_GRAPHICS_OUTPUT_PROTOCOL *GOP = NULL;
-	UINTN MapKey;
 	VOID (*entry)();
-	POS_PAYLOAD *pos_Payload = (POS_PAYLOAD *)0x8000;
+	POS_PAYLOAD *pos_Payload = (POS_PAYLOAD *)PLADD;
+
+	UINT64 MemMapSize = 0;
+	EFI_MEMORY_DESCRIPTOR *MemMap = NULL;
+	UINT64 MapKey = 0;
+	UINT64 DesSize  = 0;
+	UINT32 DesVersion = 0;
 
 	Print(L"ParadOS Bootloader ver. 1.0N\n");
 
-	//Allocate some page for our payload.
-	/*
-	Print(L"Allocating...");
-	status = ST->BootServices->AllocatePool(EfiLoaderData, sizeof(POS_PAYLOAD), (VOID **)&pos_Payload);
-	if(CheckProcess(status, 1)){
-		ST->BootServices->Exit(IH, status, 0, NULL);
-	}
-*/
 	//Load Loader
 	Print(L"Loading the ModuleLoader...");
 	status = LoadFileFromTheDrive(L"\\Loader\\ModuleLoader", &Buffer, &LoaderSize);
@@ -97,7 +96,7 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	Print(L"Get GOP infomation...");
 	status = ST->BootServices->LocateProtocol(&gEfiGraphicsOutputProtocolGuid, NULL, (VOID **)&GOP);
 	if(CheckProcess(status, 1)) {
-		
+		ST->BootServices->Exit(IH, status, 0, NULL);
 	}
 	pos_Payload->HResolution = GOP->Mode->Info->HorizontalResolution;
 	pos_Payload->VResolution = GOP->Mode->Info->VerticalResolution;
@@ -105,16 +104,9 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	pos_Payload->FrameBufferSize = GOP->Mode->FrameBufferSize;
 	pos_Payload->PixelPerScanLine = GOP->Mode->Info->PixelsPerScanLine;
 	pos_Payload->ColorFormat = GOP->Mode->Info->PixelFormat;
-	
-
-	Print(L"Memory Work...");
-	status = MemoryWork(&(pos_Payload->Page_Number));
-	if(CheckProcess(status, 1)){
-		ST->BootServices->Exit(IH, status, 0, NULL);
-	}
 
 	Print(L"Passing control...\n");
-	Print(L"If you stuck, that mean ParadOS fail to start.");
+	Print(L"If you stuck, that mean ParadOS fail to start.\n");
 	
 	
 	/*
@@ -128,9 +120,12 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	do{
 		i++;
 		if(i == 3){
+			Print(L"Fail to escape...");
 			ST->BootServices->Exit(IH, status, 0, NULL);
 		}
-		GetMapKey(&MapKey);//should not do anything before calling the ExitBootServices, these operation might destory the accuracy of memory map.
+
+		//should not do anything before calling the ExitBootServices, these operation might destory the accuracy of memory map.
+		MemoryWork(&MapKey, &DesVersion, &DesSize, MemMap, &MemMapSize);
 		status = ST->BootServices->ExitBootServices(IH, MapKey);
 	}while(status != EFI_SUCCESS);
 
@@ -141,29 +136,33 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	*/
+	ST->RuntimeServices->SetVirtualAddressMap(MemMapSize, DesSize, DesVersion, MemMap);
+	
+	
+	//Runtime services
+	ST->RuntimeServices->ConvertPointer(0, &(ST->RuntimeServices));
+	pos_Payload->RuntimeServices = (ST->RuntimeServices);
+	//Configuration table
+	ST->RuntimeServices->ConvertPointer(0, &(ST->ConfigurationTable));
+	pos_Payload->ConfigurationTable = (ST->ConfigurationTable);
 
 	entry();//Get the fuck out of here!
 
 	return EFI_SUCCESS; //Never go here, just let the compiler happy :)
 }
 
-EFI_STATUS MemoryWork(UINT64 *pages_Number){
+EFI_STATUS MemoryWork(UINT64 *Key, UINT32 *DesVersion, UINT64 *DesSize, EFI_MEMORY_DESCRIPTOR *Memmap, UINT64 *MemmapSize){
 
 	//lazy..
 	EFI_STATUS status;
-	EFI_MEMORY_DESCRIPTOR *MemMap = NULL; //point to nothing
-	UINTN MemMapSize = sizeof(EFI_MEMORY_DESCRIPTOR);
-	UINTN DesSize = 0;
-	UINT32 DesVersion;
-	UINTN MapKey;
 	//Get Memory Map Size frist
 	while(1){
-	status = gBS->AllocatePool(EfiLoaderData, MemMapSize, (VOID **)&MemMap);
+	status = gBS->AllocatePool(EfiLoaderData, *MemmapSize, (VOID **)&Memmap);
 	if(status == EFI_SUCCESS){
-		status = gST->BootServices->GetMemoryMap(&MemMapSize, MemMap, &MapKey, &DesSize, &DesVersion);
+		status = gST->BootServices->GetMemoryMap(MemmapSize, Memmap, Key, DesSize, DesVersion);
 		if(status == EFI_BUFFER_TOO_SMALL){
-			gBS->FreePool(MemMap);
-			MemMapSize += sizeof(EFI_MEMORY_DESCRIPTOR);
+			gBS->FreePool(Memmap);
+			MemmapSize += sizeof(EFI_MEMORY_DESCRIPTOR);
 		}else if(status == EFI_SUCCESS){
 			break;
 		}else{
@@ -173,36 +172,8 @@ EFI_STATUS MemoryWork(UINT64 *pages_Number){
 		return status;
 	}
 	}
-	UINTN max = MemMapSize / DesSize;
-	for(UINTN i = 0; i < max;i++){
-		EFI_MEMORY_DESCRIPTOR *temp = (EFI_MEMORY_DESCRIPTOR *)(((UINT8 *)MemMap) + (i * DesSize));
-		*pages_Number += temp->NumberOfPages;
-	}
+
 	return EFI_SUCCESS;
-}
-
-EFI_STATUS GetMapKey(UINTN *key)
-{
-	EFI_STATUS status = EFI_OUT_OF_RESOURCES;//init variable
-	UINTN MemMapSize = 0;
-	UINTN DescriptorSize = 0;
-	UINT32 DescriptorVersion = 0;
-	EFI_MEMORY_DESCRIPTOR *MemMap = NULL;
-	do {
-		//once the GetMemoryMap function return EFI_BUFFER_TOO_SMALL, it also return the buffer size it need
-		if(status == EFI_BUFFER_TOO_SMALL) {
-			status = gBS->AllocatePool(EfiLoaderData, MemMapSize, (VOID **)&MemMap);
-			if(CheckProcess(status, 0)){
-				return status;
-			}
-		} else if(status == EFI_INVALID_PARAMETER) {
-			break;
-		}
-		status = gST->BootServices->GetMemoryMap(&MemMapSize, MemMap, key, &DescriptorSize, &DescriptorVersion);
-		
-	} while(CheckProcess(status, 0));
-
-	return status;
 }
 
 EFI_STATUS LoadFileFromTheDrive(IN CHAR16 *FileName, OUT VOID **Data, OUT UINTN *Size)

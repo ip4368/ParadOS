@@ -57,17 +57,19 @@ void Print(const char *text, ...)
 {
 	uint32 size = 0;
 	uint32 arg_num = 0;
+	bool u = false;
 	char current;
-	char next;
 	va_list arg_list;
 	va_start(arg_list, text);
 	//Frist, we need to know how many args we have.
 	while(text[size] != '\0') {
 		//get current letter
 		char current = text[size];
-		char next = text[size + 1];
 		if(current == '%'){
-			if(next == 's' || next == 'd' || next == 'x'){
+			if(text[size + 1] == 'u'){
+				size++;
+			}
+			if((text[size + 1] == 's' || text[size + 1] == 'b' || text[size + 1] == 'w' || text[size + 1] == 'd' || text[size + 1] == 'q' || text[size + 1] == 'x')){
 				arg_num++;
 				size++; //jump over 2 letter
 			}
@@ -79,7 +81,6 @@ void Print(const char *text, ...)
 	size = 0; //reset.
 	while(text[size] != '\0'){ //another loop..
 		current = text[size];
-		next = text[size + 1];
 		
 		//check position
 		if(cursorX >= cursorX_Max){ //if current row is at the end, then break.
@@ -106,34 +107,119 @@ void Print(const char *text, ...)
 			}
 			case '%':{
 				char buffer[50];
-				int temp;
 				int length;
+
 				if(arg_num != 0){
-					if(next == 'd'){
-							temp = va_arg(arg_list, int);
-							length = ToString(temp, buffer);
+							
+					if(text[size + 1] == 'u'){
+						size++;
+						u = true;
+					}else{
+						u = false;
+					}
+
+					switch(text[size + 1]){
+						case 'b':{
+							int8 b = va_arg(arg_list, int);
+							if(u){
+								uint8 ub = (uint8)b;
+								length = ToString(ub, buffer);
+							}else{
+								length = ToString(b, buffer);
+							}
+
 							for(int i = length; i >= 0; i--){
 								PrintChar(buffer[i], color);
 								cursorX++;
 							}
 							arg_num--;
-					}else if(next == 's'){
-						char *tempString = va_arg(arg_list, char*);
-						Print(tempString);
-						arg_num--;
-					}else if(next == 'x'){
-						temp = va_arg(arg_list, int);
+							break;
+
+						}
+
+						case 'w':{
+							int16 w = va_arg(arg_list, int);
+							if(u){
+								uint16 uw = (uint16)w;
+								length = ToString(uw, buffer);
+							}else{
+								length = ToString(w, buffer);
+							}
+							
+							for(int i = length; i >= 0; i--){
+								PrintChar(buffer[i], color);
+								cursorX++;
+							}
+							arg_num--;
+							break;
+						}
+
+						case 'd':{
+							int32 d = va_arg(arg_list, int);
+							if(u){
+								uint32 ud = (uint32)d;
+								length = ToString(ud, buffer);
+							}else{
+								length = ToString(d, buffer);
+							}
+							
+							for(int i = length; i >= 0; i--){
+								PrintChar(buffer[i], color);
+								cursorX++;
+							}
+							arg_num--;
+							break;
+						}
+
+						case 'q':{
+							int64 q = va_arg(arg_list, long long);
+							if(u){
+								uint64 uq = (uint64)q;
+								length = ToString(uq, buffer);
+							}else{
+								length = ToString(q, buffer);
+							}
+							
+							for(int i = length; i >= 0; i--){
+								PrintChar(buffer[i], color);
+								cursorX++;
+							}
+							arg_num--;
+							break;
+						}
+
+						case 'x':{
+							uint64 temp;
+							temp = va_arg(arg_list, uint64);
 						length = ToHexString(temp, buffer);
 							for(int i = length - 1;i >= 0; i--){
 								PrintChar(buffer[i], color);
 								cursorX++;
 							}	
 							arg_num--;
+							break;
+						}
+
+						case 's':{
+						char *tempString = va_arg(arg_list, char*);
+						Print(tempString);
+						arg_num--;
+						}
+
+						case '%':{
+							PrintChar(current, color);
+							cursorX++;
+							break;
+						}
+						default:{
+							break;
+						}
 					}
-				}
-				if(next == '%'){
-				PrintChar(current, color);
-				cursorX++;
+
+				}else{
+					PrintChar(current, color);
+					cursorX++;
+					break;
 				}
 				size++;
 				break;

@@ -4,6 +4,178 @@
 		"selected_items":
 		[
 			[
+				"Base",
+				"Base_High"
+			],
+			[
+				"Bas",
+				"Base_Low"
+			],
+			[
+				"Li",
+				"Limit_Low"
+			],
+			[
+				"GDT",
+				"GDT_R	label"
+			],
+			[
+				"Fram",
+				"FrameBufferBase"
+			],
+			[
+				"uint",
+				"uint64"
+			],
+			[
+				"Is",
+				"IsNumber"
+			],
+			[
+				"ar",
+				"arg_num"
+			],
+			[
+				"Data",
+				"DataSize"
+			],
+			[
+				"Var",
+				"VariableName"
+			],
+			[
+				"Va",
+				"VariableName"
+			],
+			[
+				"uin",
+				"uint64"
+			],
+			[
+				"EFI",
+				"EFI_STATUS"
+			],
+			[
+				"EFI_R",
+				"EFI_RESET_TYPE"
+			],
+			[
+				"EF",
+				"EFI_STATUS"
+			],
+			[
+				"EFI_",
+				"EFI_STATUS"
+			],
+			[
+				"Con",
+				"ConfigurationTable"
+			],
+			[
+				"Run",
+				"RuntimeServices"
+			],
+			[
+				"R",
+				"RuntimeServices"
+			],
+			[
+				"Des",
+				"DesVersion"
+			],
+			[
+				"Mema",
+				"MemMapSize"
+			],
+			[
+				"Mem",
+				"MemMapSize"
+			],
+			[
+				"UIN",
+				"UINT64"
+			],
+			[
+				"UN",
+				"UINT64"
+			],
+			[
+				"In",
+				"Initializing"
+			],
+			[
+				"PD",
+				"PDT"
+			],
+			[
+				"push",
+				"pushfd 	Push EFLAGS Register onto the Stack"
+			],
+			[
+				"gdt",
+				"gdt_r"
+			],
+			[
+				"GDT_",
+				"GDT_PTR"
+			],
+			[
+				"Print",
+				"PrintGDT"
+			],
+			[
+				"temp",
+				"temp"
+			],
+			[
+				"S",
+				"SetGDT"
+			],
+			[
+				"base",
+				"Base_Low"
+			],
+			[
+				"GET",
+				"GetMSR"
+			],
+			[
+				"Base_",
+				"Base_Low"
+			],
+			[
+				"G",
+				"Granularity"
+			],
+			[
+				"LE",
+				"LETTER_SIZE_X"
+			],
+			[
+				"Set",
+				"SetBackgroundColor"
+			],
+			[
+				"in",
+				"index"
+			],
+			[
+				"LETT",
+				"LETTER_SIZE_Y"
+			],
+			[
+				"Temp",
+				"TempY"
+			],
+			[
+				"STA",
+				"STACK_BOTTOM	label"
+			],
+			[
+				"de",
+				"define"
+			],
+			[
 				"logo",
 				"Logo"
 			],
@@ -32,23 +204,11 @@
 				"STACK_TOP	label"
 			],
 			[
-				"GDT",
-				"GDTR	label"
-			],
-			[
 				"pa",
 				"Payload"
 			],
 			[
-				"UIN",
-				"UINT8"
-			],
-			[
 				"UI",
-				"UINT64"
-			],
-			[
-				"uin",
 				"UINT64"
 			],
 			[
@@ -58,10 +218,6 @@
 			[
 				"Page",
 				"Page_Number"
-			],
-			[
-				"uint",
-				"uint64"
 			],
 			[
 				"CPU",
@@ -88,10 +244,6 @@
 				"line_signal2"
 			],
 			[
-				"EFI",
-				"EFI_MEMORY_DESCRIPTOR"
-			],
-			[
 				"int",
 				"input"
 			],
@@ -116,14 +268,6 @@
 				"PageNumber"
 			],
 			[
-				"Mem",
-				"MemSize"
-			],
-			[
-				"Set",
-				"SetColor"
-			],
-			[
 				"print",
 				"Print"
 			],
@@ -134,10 +278,6 @@
 			[
 				"col",
 				"color"
-			],
-			[
-				"de",
-				"default"
 			],
 			[
 				"arg",
@@ -156,14 +296,6 @@
 				"cursorX"
 			],
 			[
-				"ar",
-				"arg_list"
-			],
-			[
-				"Print",
-				"PrintChar"
-			],
-			[
 				"cur",
 				"cursorX"
 			],
@@ -178,10 +310,6 @@
 			[
 				"cursor",
 				"cursorX"
-			],
-			[
-				"in",
-				"infomation"
 			],
 			[
 				"sub",
@@ -236,10 +364,6 @@
 				"MemSize"
 			],
 			[
-				"UN",
-				"UINTN"
-			],
-			[
 				"MemMa",
 				"MemMap"
 			],
@@ -250,10 +374,6 @@
 			[
 				"Chce",
 				"CheckProcess"
-			],
-			[
-				"Des",
-				"DesNumber"
 			],
 			[
 				"Check",
@@ -295,16 +415,24 @@
 			"file": "Source/ModuleLoader/main.c",
 			"settings":
 			{
-				"buffer_size": 1161,
+				"buffer_size": 1349,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "Source/ModuleLoader/Makefile",
+			"file": "Source/ModuleLoader/Memory.c",
 			"settings":
 			{
-				"buffer_size": 449,
-				"line_ending": "Unix"
+				"buffer_size": 722,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Source/ModuleLoader/GDT.c",
+			"settings":
+			{
+				"buffer_size": 1837,
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -315,10 +443,14 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 168.0,
-		"last_filter": "Package Control: install	",
+		"height": 392.0,
+		"last_filter": "Package Control: ",
 		"selected_items":
 		[
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			],
 			[
 				"Package Control: install	",
 				"Package Control: Install Package"
@@ -328,7 +460,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 414.0
+		"width": 400.0
 	},
 	"console":
 	{
@@ -354,48 +486,52 @@
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/BootLoader/ParadOS-Boot",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/BootLoader/ParadOS-Boot/Bootloader",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/Library",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Tools",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Tools/edk2",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Tools/edk2/ParadOS-Boot",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Tools/edk2/ParadOS-Boot/Bootloader"
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader"
 	],
 	"file_history":
 	[
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Terminal.c",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Memory.c",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Interrupt.c",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Graphics.c",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Drawing.c",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/CPU.c",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/portal.asm",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Tools/edk2/ParadOS-Boot/Bootloader/Bootloader.c",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/main.c",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Logo.h",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/BootLoad.h",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/BootLoader/ParadOS-Boot/Bootloader/Bootloader.c",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Makefile",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Dear.Linker",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Graphics.h",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Drawing.h",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Font.h",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Draw.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/GDT.h",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/GDT.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Memory.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Terminal.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/BootLoad.h",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/main.c",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/Types.h",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Interrupt.h",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/GDT.asm",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/CPU.h",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Library/String.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/Library/String.h",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Terminal-old.c",
+		"/C/Users/IAZE/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Tools/edk2/ParadOS-Boot/Bootloader/Bootloader.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/BootLoader/ParadOS-Boot_UEFI/Bootloader/Bootloader.c",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Memory.h",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/portal.asm",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/AssemblyWork.asm",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/CPU.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/debug.txt",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Font.h",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Font2.h",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Graphics.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Graphics.h",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/GDT.asm",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Dear.Linker",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/CPU.h",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Drawing.h",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Logo.h",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Drawing.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Terminal.h",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Interrupt.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/BootLoader/ParadOS-Boot/Bootloader/Bootloader.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Draw.c",
+		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Interrupt.h",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Memory.asm",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Panic.c",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Terminal.h",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ErrorLevels.h",
 		"/C/Users/IAZE/Desktop/mbot_race_w_o_error_correction/mbot_race_w_o_error_correction.ino",
 		"/F/mbot_race/mbot_race_w_o_error_correction/mbot_race_w_o_error_correction.ino",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Library/String.c",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/Library/String.h",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Tools/edk2/Conf/target.txt",
-		"/C/Users/IAZE/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/Panic.h",
 		"/C/Users/IAZE/Documents/ParadOS/Source/ModuleLoader/CPU.c",
 		"/C/Users/IAZE/Documents/ParadOS/.gitignore",
@@ -426,6 +562,19 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"next",
+			"0",
+			"EFI_UINT8",
+			"PORTAL",
+			"gdt",
+			"GDT",
+			"gdt",
+			"gdt_r",
+			"GDTR",
+			"rax",
+			"+= LETTER_SIZE_Y",
+			"+= LETTER_SIZE_X",
+			"0x00",
 			"64BIT_",
 			"PL",
 			"graphics_info",
@@ -462,6 +611,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"++",
+			"0x"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -472,7 +623,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -481,15 +632,44 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1161,
+						"buffer_size": 1349,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								722,
-								722
+								966,
+								966
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 58.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "Source/ModuleLoader/Memory.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 722,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								262,
+								262
 							]
 						],
 						"settings":
@@ -501,29 +681,30 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "Source/ModuleLoader/Makefile",
+					"buffer": 2,
+					"file": "Source/ModuleLoader/GDT.c",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 449,
+						"buffer_size": 1837,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								449,
-								449
+								379,
+								379
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Makefile/Makefile.sublime-syntax"
+							"syntax": "Packages/C++/C.sublime-syntax",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -541,7 +722,7 @@
 	},
 	"input":
 	{
-		"height": 31.0
+		"height": 40.0
 	},
 	"layout":
 	{
@@ -566,6 +747,10 @@
 		]
 	},
 	"menu_visible": true,
+	"output.assembly_documentation":
+	{
+		"height": 347.0
+	},
 	"output.find_results":
 	{
 		"height": 0.0

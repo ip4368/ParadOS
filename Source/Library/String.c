@@ -46,8 +46,8 @@ bool IsLowerCase(char input)
 	return false;
 }
 
-int ToString(int input, char buffer[]){
-	int temp = input;
+int ToString(int64 input, char buffer[]){
+	int64 temp = input;
 	int i = 0;
 	if(input < 0){
 		temp = -(temp);
@@ -62,7 +62,91 @@ int ToString(int input, char buffer[]){
 	return i;
 }
 
-int ToHexString(int input, char buffer[]){
+int ToString(uint64 input, char buffer[]){
+	uint64 temp = input;
+	int i = 0;
+	do{
+		buffer[i++] = temp % 10 + '0';
+	}while((temp /= 10) > 0);
+	return i;
+}
+
+int ToString(int32 input, char buffer[]){
+	int32 temp = input;
+	int i = 0;
+	if(input < 0){
+		temp = -(temp);
+	}
+	do{
+		buffer[i++] = temp % 10 + '0';
+	}while((temp /= 10) > 0);
+
+	if(input < 0){
+		buffer[i++] = '-';
+	}
+	return i;
+}
+
+int ToString(uint32 input, char buffer[]){
+	uint32 temp = input;
+	int i = 0;
+	do{
+		buffer[i++] = temp % 10 + '0';
+	}while((temp /= 10) > 0);
+	return i;
+}
+
+int ToString(int16 input, char buffer[]){
+	int16 temp = input;
+	int i = 0;
+	if(input < 0){
+		temp = -(temp);
+	}
+	do{
+		buffer[i++] = temp % 10 + '0';
+	}while((temp /= 10) > 0);
+
+	if(input < 0){
+		buffer[i++] = '-';
+	}
+	return i;
+}
+
+int ToString(uint16 input, char buffer[]){
+	uint16 temp = input;
+	int i = 0;
+	do{
+		buffer[i++] = temp % 10 + '0';
+	}while((temp /= 10) > 0);
+	return i;
+}
+
+int ToString(int8 input, char buffer[]){
+	int8 temp = input;
+	int i = 0;
+	if(input < 0){
+		temp = -(temp);
+	}
+	do{
+		buffer[i++] = temp % 10 + '0';
+	}while((temp /= 10) > 0);
+
+	if(input < 0){
+		buffer[i++] = '-';
+	}
+	return i;
+}
+
+int ToString(uint8 input, char buffer[]){
+	int8 temp = input;
+	int i = 0;
+	do{
+		buffer[i++] = temp % 10 + '0';
+	}while((temp /= 10) > 0);
+	return i;
+}
+
+int ToHexString(int64 input, char buffer[]){
 	char ref[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
 	int i = 0;
 	while(input >= 0){
