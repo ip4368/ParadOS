@@ -25,8 +25,10 @@ UINT64 FrameBufferBase;//8
 UINT64 FrameBufferSize;//8
 UINT32 PixelPerScanLine;//4
 UINT8 ColorFormat;//4
-//Memmory
-UINT64 Page_Number;//8
+//Memory
+UINT64 MemMapSize;
+EFI_MEMORY_DESCRIPTOR *MemMap;
+UINT64 DesSize;
 //ACPI
 
 //Partitions
@@ -56,7 +58,6 @@ UINT8 CheckProcess(EFI_STATUS status, UINT8 PrintError)
 		return 1;
 	}
 }
-
 
 EFI_STATUS MemoryWork(UINT64 *Key, UINT32 *DesVersion, UINT64 *DesSize, EFI_MEMORY_DESCRIPTOR *Memmap, UINT64 *MemmapSize);
 EFI_STATUS LoadFileFromTheDrive(IN CHAR16 *FileName, OUT VOID **Data, OUT UINTN *FileSize);
@@ -108,7 +109,6 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	Print(L"Passing control...\n");
 	Print(L"If you stuck, that mean ParadOS fail to start.\n");
 	
-	
 	/*
 	LOGIC:
 		Get memory map frist, then call the ExitBootServices.
@@ -116,7 +116,6 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 		Otherwise, call it again. 
 		Until its done.
 	*/
-	UINT8 i = 0;
 	do{
 		i++;
 		if(i == 3){
@@ -136,14 +135,17 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	*/
-	ST->RuntimeServices->SetVirtualAddressMap(MemMapSize, DesSize, DesVersion, MemMap);
+	//ST->RuntimeServices->SetVirtualAddressMap(MemMapSize, DesSize, DesVersion, MemMap);
 	
+	pos_Payload->MemMapSize = MemMapSize;
+	pos_Payload->MemMap = MemMap;
+	pos_Payload->DesSize = DesSize;
 	
 	//Runtime services
-	ST->RuntimeServices->ConvertPointer(0, &(ST->RuntimeServices));
+	//ST->RuntimeServices->ConvertPointer(0, &(ST->RuntimeServices));
 	pos_Payload->RuntimeServices = (ST->RuntimeServices);
 	//Configuration table
-	ST->RuntimeServices->ConvertPointer(0, &(ST->ConfigurationTable));
+	//ST->RuntimeServices->ConvertPointer(0, &(ST->ConfigurationTable));
 	pos_Payload->ConfigurationTable = (ST->ConfigurationTable);
 
 	entry();//Get the fuck out of here!

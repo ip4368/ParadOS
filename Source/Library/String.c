@@ -58,6 +58,8 @@ int ToString(int64 input, char buffer[]){
 
 	if(input < 0){
 		buffer[i++] = '-';
+	}else if(input < 10){
+		buffer[i++] = '0';
 	}
 	return i;
 }
@@ -68,6 +70,10 @@ int ToString(uint64 input, char buffer[]){
 	do{
 		buffer[i++] = temp % 10 + '0';
 	}while((temp /= 10) > 0);
+
+	if(input < 10){
+		buffer[i++] = '0';
+	}
 	return i;
 }
 
@@ -83,6 +89,8 @@ int ToString(int32 input, char buffer[]){
 
 	if(input < 0){
 		buffer[i++] = '-';
+	}else if(input < 10){
+		buffer[i++] = '0';
 	}
 	return i;
 }
@@ -93,6 +101,10 @@ int ToString(uint32 input, char buffer[]){
 	do{
 		buffer[i++] = temp % 10 + '0';
 	}while((temp /= 10) > 0);
+
+	if(input < 10){
+		buffer[i++] = '0';
+	}
 	return i;
 }
 
@@ -108,6 +120,8 @@ int ToString(int16 input, char buffer[]){
 
 	if(input < 0){
 		buffer[i++] = '-';
+	}else if(input < 10){
+		buffer[i++] = '0';
 	}
 	return i;
 }
@@ -118,6 +132,10 @@ int ToString(uint16 input, char buffer[]){
 	do{
 		buffer[i++] = temp % 10 + '0';
 	}while((temp /= 10) > 0);
+
+	if(input < 10){
+		buffer[i++] = '0';
+	}
 	return i;
 }
 
@@ -133,6 +151,8 @@ int ToString(int8 input, char buffer[]){
 
 	if(input < 0){
 		buffer[i++] = '-';
+	}else if(input < 10){
+		buffer[i++] = '0';
 	}
 	return i;
 }
@@ -143,6 +163,10 @@ int ToString(uint8 input, char buffer[]){
 	do{
 		buffer[i++] = temp % 10 + '0';
 	}while((temp /= 10) > 0);
+
+	if(input < 10){
+		buffer[i++] = '0';
+	}
 	return i;
 }
 

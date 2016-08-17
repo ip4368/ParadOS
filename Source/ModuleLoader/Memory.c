@@ -1,28 +1,27 @@
 #include "ModuleLoader/Memory.h"
-
-//uint64 PML4T[4] __attribute__((aligned(0x1000)));
-//uint64 PDPT[512] __attribute__((aligned(0x1000)));
-//uint64 PDT[512] __attribute__((aligned(0x1000)));
-//uint64 PT[512] __attribute__((aligned(0x1000)));
+#include "ModuleLoader/Terminal.h"
+uint64 PDP[4] __attribute__((aligned(0x1000)));
+uint64 PD[512] __attribute__((aligned(0x1000)));
+uint64 PT[512] __attribute__((aligned(0x1000)));
 
 void SetupPaging(){
-/*
+
+	uint64 cr = 0;
+	asm(".intel_syntax noprefix;" "xor rax, rax;" "mov rax, cr0;" ".att_syntax prefix;" :"=a" (cr));
+	cr = cr & 0x7fffffff;
+	asm(".intel_syntax noprefix;" "mov cr0, rax;" ".att_syntax prefix;": :"a" (cr));
+
 	//wipe memory area
 	for(int i = 0; i < 4; i++){
-		PML4T[i] = 0;
+		PDP[i] = 0;
 	}
 	for(int i = 0; i < 512; i++){
-		PDPT[i] = 0;
-		PDT[i] = 0;
+		PD[i] = 0;
 		PT[i] = 0;
 	}
 	//pointing
-	PML4T[0] = (uint64)&PDPT;
-	PDPT[0] = (uint64)&PDT;
-	PDT[0] = (uint64)&PT;
-
-	PDPT[0] |= 3;
-	PDT[0] |= 3;
+	PDP[0] = (uint64)&PD | 1;
+	PD[0] = (uint64)&PT | 3;
 
 	uint32 PageSize = 0;
 	for(int i = 0; i < 512; i++){
@@ -30,6 +29,11 @@ void SetupPaging(){
 		PageSize += 4096;
 	}
 
-	asm(".intel_syntax noprefix;" "mov cr3, rax;" ".att_syntax prefix;" : : "a" (&PML4T));
-	*/
+	asm(".intel_syntax noprefix;" "mov cr3, rax;" ".att_syntax prefix;" : : "a" (&PDP));	
+
+	asm(".intel_syntax noprefix;" "xor rax, rax;" "mov rax, cr0;" ".att_syntax prefix;" :"=a" (cr));
+	cr += 0x80000000;
+	asm(".intel_syntax noprefix;" "mov cr0, rax;" ".att_syntax prefix;": :"a" (cr));
+
+
 }

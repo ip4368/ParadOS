@@ -30,6 +30,50 @@ typedef enum {
   EfiResetShutdown
 } EFI_RESET_TYPE;
 
+typedef struct {
+uint32 Type;
+uint64 PhysicalStart;
+uint64 VirtualStart;
+uint64 NumberOfPages;
+uint64 Attribute;
+} EFI_MEMORY_DESCRIPTOR;
+
+typedef enum {
+EfiReservedMemoryType,
+EfiLoaderCode,
+EfiLoaderData,
+EfiBootServicesCode,
+EfiBootServicesData,
+EfiRuntimeServicesCode,
+EfiRuntimeServicesData,
+EfiConventionalMemory,
+EfiUnusableMemory,
+EfiACPIReclaimMemory,
+EfiACPIMemoryNVS,
+EfiMemoryMappedIO,
+EfiMemoryMappedIOPortSpace,
+EfiPalCode,
+EfiPersistentMemory,
+EfiMaxMemoryType
+} EFI_MEMORY_TYPE;
+
+const char *memory_types[] = { 
+    "ReservedMemory         ", 
+    "LoaderCode             ", 
+    "LoaderData             ", 
+    "BootServicesCode       ", 
+    "BootServicesData       ", 
+    "RuntimeServicesCode    ", 
+    "RuntimeServicesData    ", 
+    "ConventionalMemory     ", 
+    "UnusableMemory         ", 
+    "ACPIReclaimMemory      ", 
+    "ACPIMemoryNVS          ", 
+    "MemoryMappedIO         ", 
+    "MemoryMappedIOPortSpace", 
+    "PalCode                ", 
+    "MaxMemory              "
+}; 
 
 typedef struct {
   ///
@@ -105,7 +149,9 @@ uint64 FrameBufferSize;
 uint32 PixelPerScanLine;
 uint8 ColorFormat;
 //Memmory
-uint64 Page_Number;
+uint64 MemMapSize;
+EFI_MEMORY_DESCRIPTOR *MemMap;
+uint64 DesSize;
 //ACPI
 
 //Partitions

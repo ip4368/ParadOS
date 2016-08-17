@@ -10,18 +10,20 @@ void PrintGDT(){
 
 	temp_r = (GDT_PTR *)ReadGDT();
 
-	Print("GDT Size: %d\n", temp_r->Limit);
+	Print("GDT Size: %d\n", (temp_r->Limit) + 1);
 	temp = (GDT *)temp_r->Base;
-	int i = 0;
-	Print("NULL:\n Limit_Low: 0x%x\n Base_Low: 0x%x\n Base_Middle: 0x%x\n Access: 0x%x\n Granularity: 0x%x\n Base_High: 0x%x\n", temp[i].Limit_Low, temp[i].Base_Low, temp[i].Base_Middle, temp[i].Access, temp[i].Granularity, temp[i].Base_High);
-	i++;
-	Print("CODE:\n Limit_Low: 0x%x\n Base_Low: 0x%x\n Base_Middle: 0x%x\n Access: 0x%x\n Granularity: 0x%x\n Base_High: 0x%x\n", temp[i].Limit_Low, temp[i].Base_Low, temp[i].Base_Middle, temp[i].Access, temp[i].Granularity, temp[i].Base_High);
-	i++;
-	Print("DATA:\n Limit_Low: 0x%x\n Base_Low: 0x%x\n Base_Middle: 0x%x\n Access: 0x%x\n Granularity: 0x%x\n Base_High: 0x%x\n", temp[i].Limit_Low, temp[i].Base_Low, temp[i].Base_Middle, temp[i].Access, temp[i].Granularity, temp[i].Base_High);
-
+	int count = ((temp_r->Limit + 1) / 8);
+	Print("GDT Count: %d\n", count);
+	for(int i = 0; i < count;i++){
+		Print("No.%x:\n LLow: 0x%x BLow: 0x%x BMiddle: 0x%x A: 0x%x G: 0x%x BHigh: 0x%x\n", i * 8, temp[i].Limit_Low, temp[i].Base_Low, temp[i].Base_Middle, temp[i].Access, temp[i].Granularity, temp[i].Base_High);
+	}
 	uint64 cs = 0;
 	asm(".intel_syntax noprefix;" "mov rax, cs;" ".att_syntax prefix;" : "=a" (cs));
 	Print("cs: 0x%x\n", cs);
+
+	uint64 ds = 0;
+	asm(".intel_syntax noprefix;" "mov rax, ds;" ".att_syntax prefix;" : "=a" (ds));
+	Print("ds: 0x%x\n", ds);
 }
 
 uint64* ReadGDT(){

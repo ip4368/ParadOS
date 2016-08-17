@@ -16,6 +16,7 @@ void SetupCPU(){
 	__cpuid(0x0, result, (*cpu_string), (*(cpu_string+1)), (*(cpu_string+2)));
 	if(!result){
 		//if eax == 0, then CPUID_Support = false;
+		SetColor(0xff0000);
 		Print("CPUID is not supported.\n");
 		HaltCPU();
 	}//support!
@@ -37,7 +38,7 @@ void SetupCPU(){
 	__cpuid(0x80000000, result, useless, useless, useless);
 	if(!result){
 		//if eax == 0, then CPUID_Ext._Support = false;
-		SetColor(0xFF1493);
+		SetColor(0xff0000);
 		Print("CPUID Ext. is not supported.\n");
 		HaltCPU();
 	}//support!
@@ -47,8 +48,17 @@ void SetupCPU(){
 	//
 	__cpuid(0x1, useless, useless, useless, CPU_FEATURES); //we only need edx
 	if(CPU_FEATURES == 0){
-		SetColor(0xFF1493);
+		SetColor(0xff0000);
 		Print("Cant get cpu feature flags.\n");
+		HaltCPU();	
+	}
+
+	//
+	//Support MSR?
+	//
+	if(!(CPU_FEATURES & MSR_SUPPORTED)){
+		SetColor(0xff0000);
+		Print("MSR is not supported.\n");
 		HaltCPU();	
 	}
 
@@ -68,13 +78,9 @@ uint64 GetMSR(uint32 msr_number){
 	uint32 lower = 0;
 	uint32 higher = 0;
 	uint64 result = 0;
-	if(CPU_FEATURES & MSR_SUPPORTED){ //MSR supported
-		__asm__ ("rdmsr\n\t" : "=a"(lower), "=d"(higher) : "c"(msr_number));
-		result = (higher <<  31) | lower;
-		return result;
-	}else{
-		return 0;
-	}
+	__asm__ ("rdmsr\n\t" : "=a"(lower), "=d"(higher) : "c"(msr_number));
+	result = (higher <<  31) | lower;
+	return result;
 }
 
 void HaltCPU(){

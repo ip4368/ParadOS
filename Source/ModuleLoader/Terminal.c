@@ -9,8 +9,10 @@
 #define UPPER_INDEX 33
 #define LOWER_INDEX 65
 
-#define LETTER_SIZE_X 15
-#define LETTER_SIZE_Y 16
+#define PPD 1 //Pixel per dot
+
+#define LETTER_SIZE_X (PPD * 8) - 1
+#define LETTER_SIZE_Y PPD * 8
 
 uint32 cursorX;
 uint32 cursorY;
@@ -86,13 +88,11 @@ void Print(const char *text, ...)
 		if(cursorX >= cursorX_Max){ //if current row is at the end, then break.
 			cursorX = 0;
 			cursorY++;
-			break;
 		}		
 		if(cursorY >= cursorY_Max){ //if the columns ran out, then clean screen. PS. we cant use runtime allocate service yet, so we wont do scrolling.
 			CleanScreen();
 			cursorX = 0;
 			cursorY = 0;
-			break;
 		}
 
 		switch(current){
@@ -120,7 +120,7 @@ void Print(const char *text, ...)
 
 					switch(text[size + 1]){
 						case 'b':{
-							int8 b = va_arg(arg_list, int);
+							int8 b = (int8)va_arg(arg_list, int);
 							if(u){
 								uint8 ub = (uint8)b;
 								length = ToString(ub, buffer);
@@ -128,7 +128,7 @@ void Print(const char *text, ...)
 								length = ToString(b, buffer);
 							}
 
-							for(int i = length; i >= 0; i--){
+							for(int i = length - 1; i >= 0; i--){
 								PrintChar(buffer[i], color);
 								cursorX++;
 							}
@@ -138,7 +138,7 @@ void Print(const char *text, ...)
 						}
 
 						case 'w':{
-							int16 w = va_arg(arg_list, int);
+							int16 w = (int16)va_arg(arg_list, int);
 							if(u){
 								uint16 uw = (uint16)w;
 								length = ToString(uw, buffer);
@@ -146,7 +146,7 @@ void Print(const char *text, ...)
 								length = ToString(w, buffer);
 							}
 							
-							for(int i = length; i >= 0; i--){
+							for(int i = length - 1; i >= 0; i--){
 								PrintChar(buffer[i], color);
 								cursorX++;
 							}
@@ -155,7 +155,7 @@ void Print(const char *text, ...)
 						}
 
 						case 'd':{
-							int32 d = va_arg(arg_list, int);
+							int32 d = (int32)va_arg(arg_list, int);
 							if(u){
 								uint32 ud = (uint32)d;
 								length = ToString(ud, buffer);
@@ -163,7 +163,7 @@ void Print(const char *text, ...)
 								length = ToString(d, buffer);
 							}
 							
-							for(int i = length; i >= 0; i--){
+							for(int i = length - 1; i >= 0; i--){
 								PrintChar(buffer[i], color);
 								cursorX++;
 							}
@@ -172,7 +172,7 @@ void Print(const char *text, ...)
 						}
 
 						case 'q':{
-							int64 q = va_arg(arg_list, long long);
+							int64 q = (int64)va_arg(arg_list, long long);
 							if(u){
 								uint64 uq = (uint64)q;
 								length = ToString(uq, buffer);
@@ -180,7 +180,7 @@ void Print(const char *text, ...)
 								length = ToString(q, buffer);
 							}
 							
-							for(int i = length; i >= 0; i--){
+							for(int i = length - 1; i >= 0; i--){
 								PrintChar(buffer[i], color);
 								cursorX++;
 							}
@@ -202,7 +202,12 @@ void Print(const char *text, ...)
 
 						case 's':{
 						char *tempString = va_arg(arg_list, char*);
-						Print(tempString);
+						uint64 i = 0;
+						while(tempString[i] != '\0'){
+						PrintChar(tempString[i], color);
+						cursorX++;
+						i++;
+						}
 						arg_num--;
 						}
 
@@ -233,6 +238,7 @@ void Print(const char *text, ...)
 		size++; //next.
 	}
 	color = TERMINAL_DEFAULT_COLOR;
+	va_end(arg_list);
 }
 		
 
@@ -397,21 +403,17 @@ void PrintChar(char letter, uint32 color)
 
 			if(TempData >= 128) { //2^8
 					
-					//DrawPixel(cursorX * LETTER_SIZE_X + TempX, cursorY * LETTER_SIZE_Y + TempY, color);
-
-					DrawPixel(cursorX * LETTER_SIZE_X + TempX, cursorY * LETTER_SIZE_Y + TempY, color);
-					DrawPixel(cursorX * LETTER_SIZE_X + TempX + 1, cursorY * LETTER_SIZE_Y + TempY, color);
-
-					DrawPixel(cursorX * LETTER_SIZE_X + TempX, cursorY * LETTER_SIZE_Y + TempY +1, color);
-					DrawPixel(cursorX * LETTER_SIZE_X + TempX + 1, cursorY * LETTER_SIZE_Y + TempY + 1, color);
-
-				
+					for(uint8 y = 0; y < PPD; y++){
+						for(uint8 x = 0; x < PPD; x++){
+							DrawPixel(cursorX * LETTER_SIZE_X + TempX + x, cursorY * LETTER_SIZE_Y + TempY + y, color);
+						}
+					}
 			}
-			TempX += 2;
+			TempX += PPD;
 			TempData <<= 1; //shift to the left
 
 		}
-		TempY += 2;
+		TempY+= PPD;
 	}
 
 
