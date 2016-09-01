@@ -1,39 +1,58 @@
 #include "ModuleLoader/Memory.h"
 #include "ModuleLoader/Terminal.h"
-uint64 PDP[4] __attribute__((aligned(0x1000)));
-uint64 PD[512] __attribute__((aligned(0x1000)));
-uint64 PT[512] __attribute__((aligned(0x1000)));
 
-void SetupPaging(){
+const char *memory_types[] = { 
+    "ReservedMemory         ", 
+    "LoaderCode             ", 
+    "LoaderData             ", 
+    "BootServicesCode       ", 
+    "BootServicesData       ", 
+    "RuntimeServicesCode    ", 
+    "RuntimeServicesData    ", 
+    "ConventionalMemory     ", 
+    "UnusableMemory         ", 
+    "ACPIReclaimMemory      ", 
+    "ACPIMemoryNVS          ", 
+    "MemoryMappedIO         ", 
+    "MemoryMappedIOPortSpace", 
+    "PalCode                ", 
+    "MaxMemory              "
+};
 
+void SetupPaging(EFI_MEMORY_DESCRIPTOR *MemMap, uint64 MemMapSize, uint64 DesSize){
+	//uint64 *PDP = (uint64 *)0X1000;
+	//uint64 *PD = (uint64 *)0X2000;
+	//uint64 *PT = (uint64 *)0X3000;
+
+	//wipe memory area
+
+	
+	//asm(".intel_syntax noprefix;" "mov cr3, rax;" ".att_syntax prefix;" : : "a" (&PDP));	
+
+	PrintMemMap(MemMap, MemMapSize, DesSize);
+}
+
+void PrintMemMap(EFI_MEMORY_DESCRIPTOR* MemMap, uint64 MemMapSize, uint64 DesSize){
+	EFI_MEMORY_DESCRIPTOR* map = MemMap;
+	Print("MemMapSize: %d\n", MemMapSize);
+	Print("DesSize: %d\n", DesSize);
+	uint64 max = (MemMapSize) / (DesSize);
+	for(uint64 i = 0; i < max; i++){
+	EFI_MEMORY_DESCRIPTOR *temp = (EFI_MEMORY_DESCRIPTOR *)(((uint8 *)map) + (i * DesSize));
+	Print("[#%uq] Type: %s Phy: 0x%x-0x%x Virt: 0x%x Page: %uq\n", i, memory_types[temp->Type], temp->PhysicalStart, ((temp->PhysicalStart) + ((temp->NumberOfPages) * 4096) - 1), temp->VirtualStart, temp->NumberOfPages);
+	}
+}
+
+void EnablePaging(){
+	uint64 cr = 0;
+	asm(".intel_syntax noprefix;" "xor rax, rax;" "mov rax, cr0;" ".att_syntax prefix;" :"=a" (cr));
+	cr += 0x80000000;
+	asm(".intel_syntax noprefix;" "mov cr0, rax;" ".att_syntax prefix;": :"a" (cr));
+}
+
+void DisablePaging(){
 	uint64 cr = 0;
 	asm(".intel_syntax noprefix;" "xor rax, rax;" "mov rax, cr0;" ".att_syntax prefix;" :"=a" (cr));
 	cr = cr & 0x7fffffff;
 	asm(".intel_syntax noprefix;" "mov cr0, rax;" ".att_syntax prefix;": :"a" (cr));
-
-	//wipe memory area
-	for(int i = 0; i < 4; i++){
-		PDP[i] = 0;
-	}
-	for(int i = 0; i < 512; i++){
-		PD[i] = 0;
-		PT[i] = 0;
-	}
-	//pointing
-	PDP[0] = (uint64)&PD | 1;
-	PD[0] = (uint64)&PT | 3;
-
-	uint32 PageSize = 0;
-	for(int i = 0; i < 512; i++){
-		PT[i] = PageSize | 3;
-		PageSize += 4096;
-	}
-
-	asm(".intel_syntax noprefix;" "mov cr3, rax;" ".att_syntax prefix;" : : "a" (&PDP));	
-
-	asm(".intel_syntax noprefix;" "xor rax, rax;" "mov rax, cr0;" ".att_syntax prefix;" :"=a" (cr));
-	cr += 0x80000000;
-	asm(".intel_syntax noprefix;" "mov cr0, rax;" ".att_syntax prefix;": :"a" (cr));
-
-
 }

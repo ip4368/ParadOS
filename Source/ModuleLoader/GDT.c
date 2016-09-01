@@ -1,6 +1,41 @@
 #include "ModuleLoader/GDT.h"
+//extern "C" void GDT_FLUSH();
+
+GDT gdt[3];
+GDT_PTR gdt_r;
 
 void SetupGDT(){
+	int index  = 0;
+
+	gdt[index].Limit_Low = 0;
+	gdt[index].Base_Low = 0;
+	gdt[index].Base_Middle = 0;
+	gdt[index].Access = 0;
+	gdt[index].Granularity = 0;
+	gdt[index].Base_High = 0;
+
+	index++;
+	gdt[index].Limit_Low = 0xFFFF;
+	gdt[index].Base_Low = 0;
+	gdt[index].Base_Middle = 0;
+	gdt[index].Access = 0x9A;
+	gdt[index].Granularity = 0xAF;
+	gdt[index].Base_High = 0;
+
+	index++;
+	gdt[index].Limit_Low = 0xFFFF;
+	gdt[index].Base_Low = 0;
+	gdt[index].Base_Middle = 0;
+	gdt[index].Access = 0x92;
+	gdt[index].Granularity = 0xCF;
+	gdt[index].Base_High = 0;
+
+	index++;
+	gdt_r.Limit = (8 * index) - 1;
+	gdt_r.Base = (uint64)&gdt;
+
+	//GDT_FLUSH();
+
 	PrintGDT();
 }
 
@@ -20,10 +55,6 @@ void PrintGDT(){
 	uint64 cs = 0;
 	asm(".intel_syntax noprefix;" "mov rax, cs;" ".att_syntax prefix;" : "=a" (cs));
 	Print("cs: 0x%x\n", cs);
-
-	uint64 ds = 0;
-	asm(".intel_syntax noprefix;" "mov rax, ds;" ".att_syntax prefix;" : "=a" (ds));
-	Print("ds: 0x%x\n", ds);
 }
 
 uint64* ReadGDT(){

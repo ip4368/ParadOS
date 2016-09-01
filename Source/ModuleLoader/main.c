@@ -5,15 +5,19 @@
 #include "ModuleLoader/BootLoad.h"
 #include "ModuleLoader/Memory.h"
 #include "ModuleLoader/GDT.h"
-#include "ModuleLoader/Logo.h"
 #include "ModuleLoader/Drawing.h"
 //#include "ModuleLoader/Interrupt.h"
+
+//#define WITH_LOGO
+#ifdef WITH_LOGO
+#include "ModuleLoader/Logo.h"
+#endif
 
 extern "C" void main()
 {
 	
 	POS_PAYLOAD *Payload = (POS_PAYLOAD *)PAYLOAD_ADDRESS;
-	//Make sure video functional frist, easy to debug.*JK* //uefi framebufferbase = c0000000
+	//Make sure video functional frist, easy to debug.*JK* 
 	SetupGraphics(Payload->HResolution, Payload->VResolution, Payload->FrameBufferBase, Payload->FrameBufferSize, Payload->PixelPerScanLine, Payload->ColorFormat);
 	SetupTerminal();
 
@@ -24,39 +28,34 @@ extern "C" void main()
 	Print("Wellcome to ParadOS!\n\n");
 	
 	//put the logo in the middle
+	#ifdef WITH_LOGO
 	uint32 X = CalculateStartPoint(GetHResolution() /2, WIDTH);
 	uint32 Y = CalculateStartPoint(GetVResolution() /2, HEIGTH);
 	DrawPicture((uint32 *)&(Logo[0]), X, Y, WIDTH, HEIGTH);
+	#endif
 
 	Print("Initializing CPU...\n");
 	SetupCPU();
 
-	EFI_MEMORY_DESCRIPTOR* map = Payload->MemMap;
-	Print("MemMapSize: %d\n", Payload->MemMapSize);
-	Print("DesSize: %d\n", Payload->DesSize);
-	uint64 max = (Payload->MemMapSize) / (Payload->DesSize);
-	for(uint64 i = 0; i < max; i++){
-	EFI_MEMORY_DESCRIPTOR *temp = (EFI_MEMORY_DESCRIPTOR *)(((uint8 *)map) + (i * Payload->DesSize));
-	Print("[#%uq] Type: %s Phy: 0x%x-0x%x Page: %uq\n", i, memory_types[temp->Type], temp->PhysicalStart, ((temp->PhysicalStart) + ((temp->NumberOfPages) * 4096) - 1), temp->NumberOfPages);
-	}
-
-/*
+	/*
 	Print("Initializing interrupt...\n");
 	SetupInterrupt();
 	*/
-	/*
-	Print("Initializing the Paging...\n");
-	SetupPaging();
-	*/
+	Print("Initializing GDT...\n");
+	SetupGDT();
+	
+	Print("Initializing Paging...\n");
+	Print("MemMap: 0x%x\n", Payload->MemMap);
+	PrintMemMap((Payload->MemMap), (Payload->MemMapSize), (Payload->DesSize));
 
-//	Print("Initializing GDT...\n");
-//	SetupGDT();
+	Print("Initializing GDT...\n");
+	SetupGDT();
 
 	Print("Resolution: %uw X %uw\n",GetHResolution(), GetVResolution());
 
 	Print("FrameBufferBase: %x\n", Payload->FrameBufferBase);
 
-/*
+	/*
 	Print("Initializing the interrupt...");
 	InitInterrupt();
 	*/

@@ -64,7 +64,7 @@ void Print(const char *text, ...)
 	va_list arg_list;
 	va_start(arg_list, text);
 	//Frist, we need to know how many args we have.
-	while(text[size] != '\0') {
+	while(text[size] != 0) {
 		//get current letter
 		char current = text[size];
 		if(current == '%'){
@@ -81,7 +81,7 @@ void Print(const char *text, ...)
 
 	//Second, Print all the things.
 	size = 0; //reset.
-	while(text[size] != '\0'){ //another loop..
+	while(text[size] != 0){ //another loop..
 		current = text[size];
 		
 		//check position

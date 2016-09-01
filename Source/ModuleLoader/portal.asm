@@ -5,10 +5,33 @@ extern main
 PORTAL:
     cli ;disable interrupt
 	mov rsp, STACK_BOTTOM
-    call main
 
+	lgdt [GDT_R]
+
+	mov eax, 0x10
+	push rax
+	mov rax, STACK_BOTTOM
+	push rax
+	push 0x202
+	mov eax, 0x8
+	push rax
+	mov rax, new
+	push rax
+	iretq
+
+new:
+	mov ax, 0x10
+	mov es, ax
+	mov ss, ax
+	mov ds, ax
+	mov fs, ax
+	mov gs, ax
+
+	lea rax, [rel main]
+	call rax
+    jmp HALT
 GDT_R:
-	dw GDT_END - GDT
+	dw GDT_END - GDT - 1
 	dq GDT
 GDT:
 NULL: equ $ - GDT
