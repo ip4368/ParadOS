@@ -19,5 +19,5 @@ typedef struct {
 
 void SetupGDT();
 void PrintGDT();
-uint64* ReadGDT();
+GDT_PTR* ReadGDT();
 #endif

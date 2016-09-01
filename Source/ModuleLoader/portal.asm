@@ -1,10 +1,8 @@
 global PORTAL
-global GDT_FLUSH
 extern main
 [bits 64]
 PORTAL:
     cli ;disable interrupt
-	mov rsp, STACK_BOTTOM
 
 	lgdt [GDT_R]
 
@@ -15,11 +13,10 @@ PORTAL:
 	push 0x202
 	mov eax, 0x8
 	push rax
-	mov rax, new
+	mov rax, InNewGDT
 	push rax
 	iretq
-
-new:
+InNewGDT:
 	mov ax, 0x10
 	mov es, ax
 	mov ss, ax
@@ -30,6 +27,7 @@ new:
 	lea rax, [rel main]
 	call rax
     jmp HALT
+
 GDT_R:
 	dw GDT_END - GDT - 1
 	dq GDT
@@ -51,6 +49,7 @@ DATA: equ $ - GDT
 	db 0xcf
 	db 0x0
 GDT_END:
+
 HALT:
 	cli
 	hlt

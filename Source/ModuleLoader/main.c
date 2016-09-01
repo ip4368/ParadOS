@@ -48,9 +48,6 @@ extern "C" void main()
 	Print("MemMap: 0x%x\n", Payload->MemMap);
 	PrintMemMap((Payload->MemMap), (Payload->MemMapSize), (Payload->DesSize));
 
-	Print("Initializing GDT...\n");
-	SetupGDT();
-
 	Print("Resolution: %uw X %uw\n",GetHResolution(), GetVResolution());
 
 	Print("FrameBufferBase: %x\n", Payload->FrameBufferBase);

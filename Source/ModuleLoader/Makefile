@@ -5,7 +5,6 @@ clean:
 	
 asm:
 	nasm -f elf64 portal.asm
-	#nasm -f elf64 GDT_ASM.asm
 
 c: #-Wno-unused-variable
 	x86_64-elf-g++ -c $(c) -I ../Include -fno-stack-protector -ffreestanding -O2  -nostdlib -Wall -Wextra -fno-exceptions -fno-rtti -lgcc
