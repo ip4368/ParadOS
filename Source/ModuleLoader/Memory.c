@@ -1,7 +1,7 @@
 #include "ModuleLoader/Memory.h"
 #include "ModuleLoader/Terminal.h"
 
-const char *memory_types[] = { 
+const char *MemMapType[] = { 
     "ReservedMemory         ", 
     "LoaderCode             ", 
     "LoaderData             ", 
@@ -24,22 +24,21 @@ void SetupPaging(EFI_MEMORY_DESCRIPTOR *MemMap, uint64 MemMapSize, uint64 DesSiz
 	//uint64 *PD = (uint64 *)0X2000;
 	//uint64 *PT = (uint64 *)0X3000;
 
+	PrintMemMap(MemMap, MemMapSize, DesSize);
 	//wipe memory area
 
 	
 	//asm(".intel_syntax noprefix;" "mov cr3, rax;" ".att_syntax prefix;" : : "a" (&PDP));	
 
-	PrintMemMap(MemMap, MemMapSize, DesSize);
+	
 }
 
 void PrintMemMap(EFI_MEMORY_DESCRIPTOR* MemMap, uint64 MemMapSize, uint64 DesSize){
 	EFI_MEMORY_DESCRIPTOR* map = MemMap;
-	Print("MemMapSize: %d\n", MemMapSize);
-	Print("DesSize: %d\n", DesSize);
 	uint64 max = (MemMapSize) / (DesSize);
 	for(uint64 i = 0; i < max; i++){
 	EFI_MEMORY_DESCRIPTOR *temp = (EFI_MEMORY_DESCRIPTOR *)(((uint8 *)map) + (i * DesSize));
-	Print("[#%uq] Type: %s Phy: 0x%x-0x%x Virt: 0x%x Page: %uq\n", i, memory_types[temp->Type], temp->PhysicalStart, ((temp->PhysicalStart) + ((temp->NumberOfPages) * 4096) - 1), temp->VirtualStart, temp->NumberOfPages);
+	Print("[#%uq] Type: %s Phy: 0x%x-0x%x Virt: 0x%x Page: %uq\n", i, MemMapType[temp->Type], temp->PhysicalStart, ((temp->PhysicalStart) + ((temp->NumberOfPages) * 4096) - 1), temp->VirtualStart, temp->NumberOfPages);
 	}
 }
 

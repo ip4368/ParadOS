@@ -209,6 +209,7 @@ void Print(const char *text, ...)
 						i++;
 						}
 						arg_num--;
+						break;
 						}
 
 						case '%':{

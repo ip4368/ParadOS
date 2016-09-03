@@ -415,23 +415,31 @@
 			"file": "Source/ModuleLoader/main.c",
 			"settings":
 			{
-				"buffer_size": 1349,
-				"line_ending": "Unix"
+				"buffer_size": 1629,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Source/BootLoader/ParadOS-Boot/Bootloader/Bootloader.c",
+			"settings":
+			{
+				"buffer_size": 7242,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Source/Include/ModuleLoader/BootLoad.h",
+			"settings":
+			{
+				"buffer_size": 2984,
+				"line_ending": "Windows"
 			}
 		},
 		{
 			"file": "Source/ModuleLoader/Memory.c",
 			"settings":
 			{
-				"buffer_size": 722,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Source/ModuleLoader/GDT.c",
-			"settings":
-			{
-				"buffer_size": 1837,
+				"buffer_size": 1919,
 				"line_ending": "Windows"
 			}
 		}
@@ -480,18 +488,22 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/BootLoader",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/BootLoader/ParadOS-Boot",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/BootLoader/ParadOS-Boot/Bootloader",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/Library",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader",
-		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader"
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS",
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source",
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/BootLoader",
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/BootLoader/ParadOS-Boot",
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/BootLoader/ParadOS-Boot/Bootloader",
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/Include",
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/Include/ModuleLoader",
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/ModuleLoader",
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Tools"
 	],
 	"file_history":
 	[
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/ModuleLoader/GDT.c",
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/ModuleLoader/Memory.c",
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/Include/ModuleLoader/Terminal.h",
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/ModuleLoader/Terminal.c",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/Makefile",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/Include/ModuleLoader/GDT.h",
 		"/C/Users/IAZE/cygwin/home/IAZE/ParadOS/Source/ModuleLoader/GDT.c",
@@ -562,6 +574,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"memory_types",
 			"next",
 			"0",
 			"EFI_UINT8",
@@ -623,7 +636,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -632,15 +645,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1349,
+						"buffer_size": 1629,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								966,
-								966
+								1142,
+								1142
 							]
 						],
 						"settings":
@@ -649,56 +662,27 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 58.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "Source/ModuleLoader/Memory.c",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 722,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								262,
-								262
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 148.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "Source/ModuleLoader/GDT.c",
+					"buffer": 1,
+					"file": "Source/BootLoader/ParadOS-Boot/Bootloader/Bootloader.c",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1837,
+						"buffer_size": 7242,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								379,
-								379
+								4115,
+								4115
 							]
 						],
 						"settings":
@@ -706,11 +690,69 @@
 							"syntax": "Packages/C++/C.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
+						"translation.x": -0.0,
+						"translation.y": 1620.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Source/Include/ModuleLoader/BootLoad.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2984,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "Source/ModuleLoader/Memory.c",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1919,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								767,
+								767
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
 					"type": "text"
 				}
 			]

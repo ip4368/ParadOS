@@ -15,29 +15,30 @@
 #include <Guid/FileInfo.h>
 
 #define ML_ADDR 0x100000
-#define PLADD 0x90000
+#define PLADD 0x9000
 
 typedef struct{
 //GOP
-UINT32 HResolution; //4
-UINT32 VResolution;//4
-UINT64 FrameBufferBase;//8
-UINT64 FrameBufferSize;//8
-UINT32 PixelPerScanLine;//4
-UINT8 ColorFormat;//4
+UINT32 HResolution;
+UINT32 VResolution;
+UINT64 FrameBufferBase;
+UINT64 FrameBufferSize;
+UINT32 PixelPerScanLine;
+UINT8 ColorFormat;
 //Memory
-UINT64 MemMapSize;
 EFI_MEMORY_DESCRIPTOR *MemMap;
+UINT64 MemMapSize;
 UINT64 DesSize;
+UINT32 DesVersion;
 //ACPI
 
 //Partitions
-UINT32 Partition_number;//4
-UINT64 *Partition_table;//8
+UINT32 Partition_number;
+UINT64 *Partition_table;
 //UEFI services
 EFI_RUNTIME_SERVICES *RuntimeServices;
 EFI_CONFIGURATION_TABLE *ConfigurationTable;
-} POS_PAYLOAD;//49 byte, btw fuck u windows compiler
+} POS_PAYLOAD;
 
 UINT8 CheckProcess(EFI_STATUS status, UINT8 PrintError)
 {
@@ -74,7 +75,7 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	POS_PAYLOAD *pos_Payload = (POS_PAYLOAD *)PLADD;
 
 	UINT64 MemMapSize = 0;
-	EFI_MEMORY_DESCRIPTOR *MemMap = NULL;
+	EFI_MEMORY_DESCRIPTOR *MemMap = (EFI_MEMORY_DESCRIPTOR *)0x1000;
 	UINT64 MapKey = 0;
 	UINT64 DesSize  = 0;
 	UINT32 DesVersion = 0;
@@ -116,6 +117,7 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 		Otherwise, call it again. 
 		Until its done.
 	*/
+	UINT8 i  = 0;
 	do{
 		i++;
 		if(i == 3){
@@ -135,17 +137,16 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	*/
-	//ST->RuntimeServices->SetVirtualAddressMap(MemMapSize, DesSize, DesVersion, MemMap);
-	
-	pos_Payload->MemMapSize = MemMapSize;
 	pos_Payload->MemMap = MemMap;
+	pos_Payload->MemMapSize = MemMapSize;
 	pos_Payload->DesSize = DesSize;
+	pos_Payload->DesVersion = DesVersion;
+
 	
 	//Runtime services
-	//ST->RuntimeServices->ConvertPointer(0, &(ST->RuntimeServices));
 	pos_Payload->RuntimeServices = (ST->RuntimeServices);
+
 	//Configuration table
-	//ST->RuntimeServices->ConvertPointer(0, &(ST->ConfigurationTable));
 	pos_Payload->ConfigurationTable = (ST->ConfigurationTable);
 
 	entry();//Get the fuck out of here!
@@ -158,6 +159,7 @@ EFI_STATUS MemoryWork(UINT64 *Key, UINT32 *DesVersion, UINT64 *DesSize, EFI_MEMO
 	//lazy..
 	EFI_STATUS status;
 	//Get Memory Map Size frist
+	status = gST->BootServices->GetMemoryMap(MemmapSize, Memmap, Key, DesSize, DesVersion);
 	while(1){
 	status = gBS->AllocatePool(EfiLoaderData, *MemmapSize, (VOID **)&Memmap);
 	if(status == EFI_SUCCESS){

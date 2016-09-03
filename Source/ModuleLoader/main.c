@@ -25,8 +25,11 @@ extern "C" void main()
 	//Customizable Operating System
 	CleanScreen();//Clean sscreen
 	
-	Print("Wellcome to ParadOS!\n\n");
-	
+	Print("Wellcome to ");
+	SetColor(0xffff00);
+	Print("ParadOS");
+	Print("!\n\n");
+
 	//put the logo in the middle
 	#ifdef WITH_LOGO
 	uint32 X = CalculateStartPoint(GetHResolution() /2, WIDTH);
@@ -36,17 +39,21 @@ extern "C" void main()
 
 	Print("Initializing CPU...\n");
 	SetupCPU();
+	Print("\n");
+
+	Print("Initializing GDT...\n");
+	SetupGDT();
+	Print("\n");
 
 	/*
 	Print("Initializing interrupt...\n");
 	SetupInterrupt();
+	Print("\n");
 	*/
-	Print("Initializing GDT...\n");
-	SetupGDT();
-	
+
 	Print("Initializing Paging...\n");
-	Print("MemMap: 0x%x\n", Payload->MemMap);
 	PrintMemMap((Payload->MemMap), (Payload->MemMapSize), (Payload->DesSize));
+	Print("\n");
 
 	Print("Resolution: %uw X %uw\n",GetHResolution(), GetVResolution());
 
