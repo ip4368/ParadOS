@@ -57,13 +57,7 @@ extern "C" void main()
 
 	Print("Resolution: %uw X %uw\n",GetHResolution(), GetVResolution());
 
-	Print("FrameBufferBase: %x\n", Payload->FrameBufferBase);
-
-	/*
-	Print("Initializing the interrupt...");
-	InitInterrupt();
-	*/
-	
+	Print("FrameBufferBase: %x\n", Payload->FrameBufferBase);	
 
 	HaltCPU();
 }

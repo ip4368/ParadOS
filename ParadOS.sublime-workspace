@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"Mem",
+				"MemMap"
+			],
+			[
+				"UIN",
+				"UINT32"
+			],
+			[
+				"UINT",
+				"UINT64"
+			],
+			[
+				"EFI",
+				"EFI_MEMORY_DESCRIPTOR"
+			],
+			[
 				"Base",
 				"Base_High"
 			],
@@ -52,10 +68,6 @@
 				"uint64"
 			],
 			[
-				"EFI",
-				"EFI_STATUS"
-			],
-			[
 				"EFI_R",
 				"EFI_RESET_TYPE"
 			],
@@ -86,14 +98,6 @@
 			[
 				"Mema",
 				"MemMapSize"
-			],
-			[
-				"Mem",
-				"MemMapSize"
-			],
-			[
-				"UIN",
-				"UINT64"
 			],
 			[
 				"UN",
@@ -352,10 +356,6 @@
 				"POS_MEMORY_INFO"
 			],
 			[
-				"UINT",
-				"UINT64"
-			],
-			[
 				"Boot",
 				"BootServices"
 			],
@@ -415,23 +415,15 @@
 			"file": "Source/ModuleLoader/main.c",
 			"settings":
 			{
-				"buffer_size": 1629,
+				"buffer_size": 1560,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "Source/BootLoader/ParadOS-Boot/Bootloader/Bootloader.c",
+			"file": "Tools/edk2-master/ParadOS-Boot/Bootloader/Bootloader.c",
 			"settings":
 			{
-				"buffer_size": 7242,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Source/Include/ModuleLoader/BootLoad.h",
-			"settings":
-			{
-				"buffer_size": 2984,
+				"buffer_size": 7367,
 				"line_ending": "Windows"
 			}
 		},
@@ -439,7 +431,7 @@
 			"file": "Source/ModuleLoader/Memory.c",
 			"settings":
 			{
-				"buffer_size": 1919,
+				"buffer_size": 1930,
 				"line_ending": "Windows"
 			}
 		}
@@ -451,10 +443,14 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 392.0,
-		"last_filter": "Package Control: ",
+		"height": 144.0,
+		"last_filter": "Package Control: install",
 		"selected_items":
 		[
+			[
+				"Package Control: install",
+				"Package Control: Install Package"
+			],
 			[
 				"Package Control: ",
 				"Package Control: Remove Package"
@@ -468,7 +464,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 400.0
+		"width": 414.0
 	},
 	"console":
 	{
@@ -491,15 +487,16 @@
 		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS",
 		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source",
 		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/BootLoader",
-		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/BootLoader/ParadOS-Boot",
-		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/BootLoader/ParadOS-Boot/Bootloader",
-		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/Include",
-		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/Include/ModuleLoader",
-		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/ModuleLoader",
-		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Tools"
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Tools/edk2-master",
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Tools/edk2-master/ParadOS-Boot",
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Tools/edk2-master/ParadOS-Boot/Bootloader"
 	],
 	"file_history":
 	[
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/Include/ModuleLoader/BootLoad.h",
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/.gitignore",
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/ModuleLoader/portal.asm",
+		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/BootLoader/ParadOS-Boot/Bootloader/Bootloader.c",
 		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/ModuleLoader/GDT.c",
 		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/ModuleLoader/Memory.c",
 		"/C/Users/iaze/Documents/cygwin/home/iaze/ParadOS/Source/Include/ModuleLoader/Terminal.h",
@@ -636,7 +633,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -645,15 +642,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1629,
+						"buffer_size": 1560,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1142,
-								1142
+								1284,
+								1284
 							]
 						],
 						"settings":
@@ -662,7 +659,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 148.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
@@ -670,19 +667,19 @@
 				},
 				{
 					"buffer": 1,
-					"file": "Source/BootLoader/ParadOS-Boot/Bootloader/Bootloader.c",
+					"file": "Tools/edk2-master/ParadOS-Boot/Bootloader/Bootloader.c",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7242,
+						"buffer_size": 7367,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4115,
-								4115
+								1972,
+								1972
 							]
 						],
 						"settings":
@@ -690,58 +687,28 @@
 							"syntax": "Packages/C++/C.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
-						"translation.x": -0.0,
-						"translation.y": 1620.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "Source/Include/ModuleLoader/BootLoad.h",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2984,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/C++/C++.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 495.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 2,
 					"file": "Source/ModuleLoader/Memory.c",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1919,
+						"buffer_size": 1930,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								767,
-								767
+								829,
+								829
 							]
 						],
 						"settings":
@@ -752,7 +719,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
