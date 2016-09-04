@@ -37,6 +37,8 @@ extern "C" void main()
 	DrawPicture((uint32 *)&(Logo[0]), X, Y, WIDTH, HEIGTH);
 	#endif
 
+	Print("Resolution: %uw X %uw\n\n",GetHResolution(), GetVResolution());
+
 	Print("Initializing CPU...\n");
 	SetupCPU();
 	Print("\n");
@@ -45,19 +47,24 @@ extern "C" void main()
 	SetupGDT();
 	Print("\n");
 
+	Print("Initializing Memory...\n");
+	PrintMemMap((Payload->MemMap), (Payload->MemMapSize), (Payload->DesSize));
+	Print("\n");
+
+	/*
+	Print("Initializing ACPI...\n");
+	SetupACPI();
+	Print("\n");
+	*/
+
 	/*
 	Print("Initializing interrupt...\n");
 	SetupInterrupt();
 	Print("\n");
 	*/
 
-	Print("Initializing Paging...\n");
-	PrintMemMap((Payload->MemMap), (Payload->MemMapSize), (Payload->DesSize));
-	Print("\n");
-
-	Print("Resolution: %uw X %uw\n",GetHResolution(), GetVResolution());
-
-	Print("FrameBufferBase: %x\n", Payload->FrameBufferBase);	
+	
+	
 
 	HaltCPU();
 }
