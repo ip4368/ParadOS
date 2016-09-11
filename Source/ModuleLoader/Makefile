@@ -11,7 +11,6 @@ c: #-Wno-unused-variable
 link:
 	x86_64-elf-ld -T Dear.Linker -nostdlib *.o -o ModuleLoader 
 
-debug:	all
+debug:	asm c link
 	x86_64-elf-objdump -D -b binary -m i386:x86-64:intel ModuleLoader > debug.txt
-	$(MAKE) -C ../../Tools/OVMF
-	
+	make -C ../../Tools/OVMF

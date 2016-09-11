@@ -1,5 +1,5 @@
 #include "Library/Math.h"
-
+/*
 int64 pow(int z, int x)
 {
 	// base cases
@@ -14,3 +14,5 @@ int64 pow(int z, int x)
 	if(x % 2) return temp * temp * z;
 	else return temp * temp;
 }
+
+*/

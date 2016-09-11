@@ -37,7 +37,7 @@ extern "C" void main()
 	DrawPicture((uint32 *)&(Logo[0]), X, Y, WIDTH, HEIGTH);
 	#endif
 
-	Print("Resolution: %uw X %uw\n\n",GetHResolution(), GetVResolution());
+	Print("Resolution: %u X %u\n\n",GetHResolution(), GetVResolution());
 
 	Print("Initializing CPU...\n");
 	SetupCPU();
