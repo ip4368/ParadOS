@@ -4,6 +4,7 @@
 #include "Types.h"
 
 #define PAYLOAD_ADDRESS 0x9000
+#define ML_ADDRESS 0x100000
 
 //UEFI Service define
 //Fuck! Seems UEFI want to replace or hijack the operating system.
@@ -86,6 +87,7 @@ typedef struct {
   // Miscellaneous UEFI 2.0 Service
   //
   EFI_STATUS (*QueryVariableInfo)(uint32 Attributes, uint64 *MVSS, uint64 *RVSS, uint64 *MVS);
+  
 } EFI_RUNTIME_SERVICES;
 
 typedef struct {
@@ -116,6 +118,7 @@ EFI_MEMORY_DESCRIPTOR *MemMap;
 uint64 MemMapSize;
 uint64 DesSize;
 uint32 DesVersion;
+uint64 MLSize;
 //ACPI
 
 //Partitions

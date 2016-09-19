@@ -24,8 +24,8 @@ EfiMaxMemoryType
 
 
 
-void SetupPaging(EFI_MEMORY_DESCRIPTOR *MemMap, uint64 MemMapSize, uint64 DesSize);
-void PrintMemMap(EFI_MEMORY_DESCRIPTOR* MemMap, uint64 MemMapSize, uint64 DesSize);
+void SetupPaging(EFI_MEMORY_DESCRIPTOR *MemMap, uint64 MemMapSize, uint64 DesSize, uint64 MLPage);
+void ParseMemMap(EFI_MEMORY_DESCRIPTOR* MemMap, uint64 MemMapSize, uint64 DesSize);
 void EnablePaging();
 void DisablePaging();
 

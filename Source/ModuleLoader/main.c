@@ -48,7 +48,7 @@ extern "C" void main()
 	Print("\n");
 
 	Print("Initializing Memory...\n");
-	PrintMemMap((Payload->MemMap), (Payload->MemMapSize), (Payload->DesSize));
+	SetupPaging((Payload->MemMap), (Payload->MemMapSize), (Payload->DesSize), (Payload->MLSize));
 	Print("\n");
 
 	/*

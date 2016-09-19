@@ -6,7 +6,7 @@
 	well.. if you want to use more math function, just include "tgmath.h"
 */
 
-/*
-int64 pow(int z, int x);
-*/
+
+int64 pow(int base, int n);
+
 #endif

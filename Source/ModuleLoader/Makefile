@@ -1,4 +1,4 @@
-c = main.c CPU.c Terminal.c Graphics.c Drawing.c GDT.c Memory.c ../Library/String.c 
+c = main.c CPU.c Terminal.c Graphics.c Drawing.c GDT.c Memory.c ../Library/Math.c ../Library/Size.c ../Library/String.c 
 all: asm c link clean
 clean: 
 	rm *.o
@@ -14,3 +14,4 @@ link:
 debug:	asm c link
 	x86_64-elf-objdump -D -b binary -m i386:x86-64:intel ModuleLoader > debug.txt
 	make -C ../../Tools/OVMF
+	

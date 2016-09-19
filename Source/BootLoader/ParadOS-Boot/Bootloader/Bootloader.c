@@ -1,8 +1,3 @@
-//windows compiler sucks!
-#pragma warning(disable:4152) //just make windows compiler happy
-//im gonna using windows C compiler, because the output file size is much lighter.
-#pragma warning(disable:4702)
-
 #include <Uefi.h>
 #include <Library/DevicePathLib.h>
 #include <Library/MemoryAllocationLib.h>
@@ -30,6 +25,8 @@ EFI_MEMORY_DESCRIPTOR *MemMap;
 UINT64 MemMapSize;
 UINT64 DesSize;
 UINT32 DesVersion;
+//we need to know what ML size is 
+UINT64 MLSize;
 //ACPI
 
 //Partitions
@@ -88,6 +85,9 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 	if(CheckProcess(status, 1)) {
 		ST->BootServices->Exit(IH, status, 0, NULL);
 	}
+	//System need to know how big it is.
+	pos_Payload->MLSize = LoaderSize;
+	
 	Print(L"Loader Size: %d byte\n", LoaderSize);
 
 	ST->BootServices->CopyMem(Loader, Buffer, LoaderSize);
@@ -122,7 +122,7 @@ EFI_STATUS EFIAPI UefiMain(IN EFI_HANDLE IH, IN EFI_SYSTEM_TABLE *ST)
 		i++;
 		if(i == 3){
 			Print(L"Fail to escape...");
-			ST->BootServices->Exit(IH, status, 0, NULL);
+			for(;;);
 		}
 
 		//should not do anything before calling the ExitBootServices, these operation might destory the accuracy of memory map.

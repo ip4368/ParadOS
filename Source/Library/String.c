@@ -100,11 +100,11 @@ int ToHexString(int64 input, char *buffer, bool upper){
 
 	return i;
 }
-
+/*
 uint64 TextToHex(char *buff){
 
 }
-
+*/
 
 /*		Memory copying 		*/
 
