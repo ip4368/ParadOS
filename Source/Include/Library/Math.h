@@ -2,6 +2,11 @@
 #define _LIBRARY_MATH_H_
 
 #include "Types.h"
-int64 pow(int z, int x);
+/*
+	well.. if you want to use more math function, just include "tgmath.h"
+*/
+
+
+int64 pow(int base, int n);
 
 #endif

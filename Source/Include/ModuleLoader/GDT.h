@@ -2,21 +2,22 @@
 #define _MODULELOADER_GDT_H_
 #include "Types.h"
 #include "ModuleLoader/Terminal.h"
-#pragma pack(1)
-struct GDT{
+
+typedef struct {
 	uint16 Limit_Low;
 	uint16 Base_Low;
 	uint8 Base_Middle;
 	uint8 Access;
 	uint8 Granularity;
 	uint8 Base_High;
-};
-struct GDT_PTR{
+} __attribute__((packed)) GDT;
+
+typedef struct {
 	uint16 Limit;
 	uint64 Base;
-};
-#pragma pack()
+} __attribute__((packed)) GDT_PTR;
+
 void SetupGDT();
 void PrintGDT();
-uint64* ReadGDT();
+GDT_PTR* ReadGDT();
 #endif

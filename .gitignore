@@ -4,6 +4,9 @@ unix/
 windows/
 #Ignore Output
 Source/ModuleLoader/ModuleLoader
+Source/ModuleLoader/debug.txt
+Tools/Cross/
+Tools/edk2-master/
 
 # Compiled Object files
 *.slo

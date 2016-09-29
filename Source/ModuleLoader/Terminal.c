@@ -58,30 +58,13 @@ void SetColor(uint32 c){
 void Print(const char *text, ...)
 {
 	uint32 size = 0;
-	uint32 arg_num = 0;
-	bool u = false;
 	char current;
 	va_list arg_list;
 	va_start(arg_list, text);
-	//Frist, we need to know how many args we have.
-	while(text[size] != '\0') {
-		//get current letter
-		char current = text[size];
-		if(current == '%'){
-			if(text[size + 1] == 'u'){
-				size++;
-			}
-			if((text[size + 1] == 's' || text[size + 1] == 'b' || text[size + 1] == 'w' || text[size + 1] == 'd' || text[size + 1] == 'q' || text[size + 1] == 'x')){
-				arg_num++;
-				size++; //jump over 2 letter
-			}
-		}
-		size++;
-	}
 
-	//Second, Print all the things.
+	//simple method
 	size = 0; //reset.
-	while(text[size] != '\0'){ //another loop..
+	while(text[size] != 0){ 
 		current = text[size];
 		
 		//check position
@@ -96,11 +79,11 @@ void Print(const char *text, ...)
 		}
 
 		switch(current){
-			case ' ':{ //get a space
+			case ' ':{ //got a space
 				cursorX++;
 				break;
 			}
-			case '\n':{
+			case '\n':{ //next line
 				cursorY++;
 				cursorX = 0;
 				break;
@@ -109,98 +92,82 @@ void Print(const char *text, ...)
 				char buffer[50];
 				int length;
 
-				if(arg_num != 0){
-							
-					if(text[size + 1] == 'u'){
-						size++;
-						u = true;
-					}else{
-						u = false;
-					}
-
 					switch(text[size + 1]){
-						case 'b':{
-							int8 b = (int8)va_arg(arg_list, int);
-							if(u){
-								uint8 ub = (uint8)b;
-								length = ToString(ub, buffer);
-							}else{
-								length = ToString(b, buffer);
-							}
 
-							for(int i = length - 1; i >= 0; i--){
-								PrintChar(buffer[i], color);
-								cursorX++;
+						case '@':{ //runtime color change
+							uint32 c_temp = (uint32)va_arg(arg_list, int);
+							if(c_temp <= 0xffffff){
+								SetColor(c_temp);
 							}
-							arg_num--;
 							break;
+						}
+						/*
+						case '#':{ //hard code color change
+							char buffer[6];
+							//copy 6 char to buffer
+							strncpy(buffer, text[size + 2], 6);
+							//parse buffer
+							uint32 value = TextToHex(buffer);
+							//check vaild 
 
+
+							break;
 						}
 
-						case 'w':{
-							int16 w = (int16)va_arg(arg_list, int);
-							if(u){
-								uint16 uw = (uint16)w;
-								length = ToString(uw, buffer);
-							}else{
-								length = ToString(w, buffer);
-							}
+						*/
+						case 'c':{ //char
+							char b = (char)va_arg(arg_list, int);
+							PrintChar(b, color);
+							cursorX++;
+							break;
+						}
+
+						case 'i':
+						case 'd':{ //integer
+							int64 d = (int64)va_arg(arg_list, int);
+							length = ToString(d, buffer);
 							
 							for(int i = length - 1; i >= 0; i--){
 								PrintChar(buffer[i], color);
 								cursorX++;
 							}
-							arg_num--;
 							break;
 						}
 
-						case 'd':{
-							int32 d = (int32)va_arg(arg_list, int);
-							if(u){
-								uint32 ud = (uint32)d;
-								length = ToString(ud, buffer);
-							}else{
-								length = ToString(d, buffer);
-							}
+						case 'u':{ //unsigned integer
+							uint64 u = (uint64)va_arg(arg_list, int);
+							length = ToString(u, buffer);
 							
 							for(int i = length - 1; i >= 0; i--){
 								PrintChar(buffer[i], color);
 								cursorX++;
 							}
-							arg_num--;
 							break;
 						}
 
-						case 'q':{
-							int64 q = (int64)va_arg(arg_list, long long);
-							if(u){
-								uint64 uq = (uint64)q;
-								length = ToString(uq, buffer);
-							}else{
-								length = ToString(q, buffer);
-							}
-							
-							for(int i = length - 1; i >= 0; i--){
-								PrintChar(buffer[i], color);
-								cursorX++;
-							}
-							arg_num--;
-							break;
-						}
-
-						case 'x':{
+						case 'X':{ //upper case hex
 							uint64 temp;
 							temp = va_arg(arg_list, uint64);
-						length = ToHexString(temp, buffer);
+							length = ToHexString(temp, buffer, true);
+							for(int i = length - 1;i >= 0; i--){
+								PrintChar(buffer[i], color);
+								cursorX++;
+							}
+							break;
+						}
+
+						case 'x':{ //lower case hex
+							uint64 temp;
+							temp = va_arg(arg_list, uint64);
+							length = ToHexString(temp, buffer, false);
 							for(int i = length - 1;i >= 0; i--){
 								PrintChar(buffer[i], color);
 								cursorX++;
 							}	
-							arg_num--;
 							break;
 						}
 
-						case 's':{
+						case 's':{ //string
 						char *tempString = va_arg(arg_list, char*);
 						uint64 i = 0;
 						while(tempString[i] != '\0'){
@@ -208,10 +175,10 @@ void Print(const char *text, ...)
 						cursorX++;
 						i++;
 						}
-						arg_num--;
+						break;
 						}
 
-						case '%':{
+						case '%':{ //just a '%'
 							PrintChar(current, color);
 							cursorX++;
 							break;
@@ -220,12 +187,6 @@ void Print(const char *text, ...)
 							break;
 						}
 					}
-
-				}else{
-					PrintChar(current, color);
-					cursorX++;
-					break;
-				}
 				size++;
 				break;
 			}
@@ -241,7 +202,6 @@ void Print(const char *text, ...)
 	va_end(arg_list);
 }
 		
-
 void PrintChar(char letter, uint32 color)
 {
 	int index = 0;

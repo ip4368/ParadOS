@@ -1,9 +1,10 @@
-#ifndef _BOOTLOAD_H_
-#define _BOOTLOAD_H_
+#ifndef _MODULELOADER_BOOTLOAD_H_
+#define _MODULELOADER_BOOTLOAD_H_
 
 #include "Types.h"
 
-#define PAYLOAD_ADDRESS 0x90000
+#define PAYLOAD_ADDRESS 0x9000
+#define ML_ADDRESS 0x100000
 
 //UEFI Service define
 //Fuck! Seems UEFI want to replace or hijack the operating system.
@@ -36,44 +37,7 @@ uint64 PhysicalStart;
 uint64 VirtualStart;
 uint64 NumberOfPages;
 uint64 Attribute;
-} EFI_MEMORY_DESCRIPTOR;
-
-typedef enum {
-EfiReservedMemoryType,
-EfiLoaderCode,
-EfiLoaderData,
-EfiBootServicesCode,
-EfiBootServicesData,
-EfiRuntimeServicesCode,
-EfiRuntimeServicesData,
-EfiConventionalMemory,
-EfiUnusableMemory,
-EfiACPIReclaimMemory,
-EfiACPIMemoryNVS,
-EfiMemoryMappedIO,
-EfiMemoryMappedIOPortSpace,
-EfiPalCode,
-EfiPersistentMemory,
-EfiMaxMemoryType
-} EFI_MEMORY_TYPE;
-
-const char *memory_types[] = { 
-    "ReservedMemory         ", 
-    "LoaderCode             ", 
-    "LoaderData             ", 
-    "BootServicesCode       ", 
-    "BootServicesData       ", 
-    "RuntimeServicesCode    ", 
-    "RuntimeServicesData    ", 
-    "ConventionalMemory     ", 
-    "UnusableMemory         ", 
-    "ACPIReclaimMemory      ", 
-    "ACPIMemoryNVS          ", 
-    "MemoryMappedIO         ", 
-    "MemoryMappedIOPortSpace", 
-    "PalCode                ", 
-    "MaxMemory              "
-}; 
+} EFI_MEMORY_DESCRIPTOR; 
 
 typedef struct {
   ///
@@ -97,8 +61,8 @@ typedef struct {
   //
   // Virtual Memory Services
   //
-  EFI_STATUS (*SetVirtualAddressMap)(); //ignored
-  EFI_STATUS (*ConvertPointer)(); //ignored
+  EFI_STATUS (*SetVirtualAddressMap)(uint64 MemoryMapSize, uint64 DesSize, uint32 DesVersion, EFI_MEMORY_DESCRIPTOR *NewMap); 
+  EFI_STATUS (*ConvertPointer)(uint64 unuse, void **Address);
 
   //
   // Variable Services
@@ -123,6 +87,7 @@ typedef struct {
   // Miscellaneous UEFI 2.0 Service
   //
   EFI_STATUS (*QueryVariableInfo)(uint32 Attributes, uint64 *MVSS, uint64 *RVSS, uint64 *MVS);
+  
 } EFI_RUNTIME_SERVICES;
 
 typedef struct {
@@ -149,9 +114,11 @@ uint64 FrameBufferSize;
 uint32 PixelPerScanLine;
 uint8 ColorFormat;
 //Memmory
-uint64 MemMapSize;
 EFI_MEMORY_DESCRIPTOR *MemMap;
+uint64 MemMapSize;
 uint64 DesSize;
+uint32 DesVersion;
+uint64 MLSize;
 //ACPI
 
 //Partitions
