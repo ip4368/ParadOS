@@ -2,15 +2,20 @@
 
 int64 pow(int z, int x)
 {
-	// base cases
+	// special cases
+	if(x < 0)  return 0;
 	if(x == 0) return 1;
-	if(x == 1) return z;
 
 	/*
-	 * Typical recursive solution for powering
+	 * Iterative solution for powering
 	 * Complexity is O(log x)
 	 */
-	int64 temp = pow(z, x/2);
-	if(x % 2) return temp * temp * z;
-	else return temp * temp;
+	int64 result = z;
+	while(x > 1)
+	{
+		result *= result;
+		if(x % 2) result *= z;
+		x /= 2;
+	}
+	return result;
 }
