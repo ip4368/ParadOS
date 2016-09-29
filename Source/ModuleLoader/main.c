@@ -27,6 +27,7 @@ extern "C" void main()
 	uint32 X = CalculateStartPoint(GetHResolution() /2, WIDTH);
 	uint32 Y = CalculateStartPoint(GetVResolution() /2, HEIGTH);
 	DrawPicture((uint32 *)&(Logo[0]), X, Y, WIDTH, HEIGTH);
+
 	Print("Initializing CPU...\n");
 	SetupCPU();
 
