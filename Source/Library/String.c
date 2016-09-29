@@ -46,7 +46,7 @@ bool IsLowerCase(char input)
 	return false;
 }
 
-int ToString(int64 input, char buffer[]){
+int ToString(int64 input, char *buffer){
 	int64 temp = input;
 	int i = 0;
 	if(input < 0){
@@ -64,7 +64,7 @@ int ToString(int64 input, char buffer[]){
 	return i;
 }
 
-int ToString(uint64 input, char buffer[]){
+int ToString(uint64 input, char *buffer){
 	uint64 temp = input;
 	int i = 0;
 	do{
@@ -77,113 +77,51 @@ int ToString(uint64 input, char buffer[]){
 	return i;
 }
 
-int ToString(int32 input, char buffer[]){
-	int32 temp = input;
+int ToHexString(int64 input, char *buffer, bool upper){
+	char ref_up[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+	char ref_low[] = {'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
+	char *ref_ptr;
 	int i = 0;
-	if(input < 0){
-		temp = -(temp);
+	
+	if(upper){
+		ref_ptr = ref_up;
+	}else{
+		ref_ptr = ref_low;
 	}
-	do{
-		buffer[i++] = temp % 10 + '0';
-	}while((temp /= 10) > 0);
 
-	if(input < 0){
-		buffer[i++] = '-';
-	}else if(input < 10){
-		buffer[i++] = '0';
-	}
-	return i;
-}
-
-int ToString(uint32 input, char buffer[]){
-	uint32 temp = input;
-	int i = 0;
-	do{
-		buffer[i++] = temp % 10 + '0';
-	}while((temp /= 10) > 0);
-
-	if(input < 10){
-		buffer[i++] = '0';
-	}
-	return i;
-}
-
-int ToString(int16 input, char buffer[]){
-	int16 temp = input;
-	int i = 0;
-	if(input < 0){
-		temp = -(temp);
-	}
-	do{
-		buffer[i++] = temp % 10 + '0';
-	}while((temp /= 10) > 0);
-
-	if(input < 0){
-		buffer[i++] = '-';
-	}else if(input < 10){
-		buffer[i++] = '0';
-	}
-	return i;
-}
-
-int ToString(uint16 input, char buffer[]){
-	uint16 temp = input;
-	int i = 0;
-	do{
-		buffer[i++] = temp % 10 + '0';
-	}while((temp /= 10) > 0);
-
-	if(input < 10){
-		buffer[i++] = '0';
-	}
-	return i;
-}
-
-int ToString(int8 input, char buffer[]){
-	int8 temp = input;
-	int i = 0;
-	if(input < 0){
-		temp = -(temp);
-	}
-	do{
-		buffer[i++] = temp % 10 + '0';
-	}while((temp /= 10) > 0);
-
-	if(input < 0){
-		buffer[i++] = '-';
-	}else if(input < 10){
-		buffer[i++] = '0';
-	}
-	return i;
-}
-
-int ToString(uint8 input, char buffer[]){
-	int8 temp = input;
-	int i = 0;
-	do{
-		buffer[i++] = temp % 10 + '0';
-	}while((temp /= 10) > 0);
-
-	if(input < 10){
-		buffer[i++] = '0';
-	}
-	return i;
-}
-
-int ToHexString(int64 input, char buffer[]){
-	char ref[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-	int i = 0;
 	while(input >= 0){
 		if(input < 16){
-			buffer[i++] = ref[input];
+			buffer[i++] = ref_ptr[input];
 			break;
 		}
-		buffer[i++] = ref[input%16];
+		buffer[i++] = ref_ptr[input%16];
 		input /= 16;
 	}
 
 	return i;
 }
 /*
-char ToChar(unsigned)
+uint64 TextToHex(char *buff){
+
+}
 */
+
+/*		Memory copying 		*/
+
+char* strcpy(char *S1, const char *S2){
+	uint64 i = 0;
+	while(S2[i] != '\0'){
+		S1[i] = S2[i];
+		i++;
+	}
+	return S1;
+}
+
+char* strncpy(char *S1, const char *S2, uint64 n){
+	uint64 i = 0;
+	while(i != n){
+		S1[i] = S2[i];
+		i++;
+	}
+	return S1;
+}

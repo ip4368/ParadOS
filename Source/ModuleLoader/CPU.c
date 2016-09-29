@@ -86,5 +86,7 @@ uint64 GetMSR(uint32 msr_number){
 void HaltCPU(){
 	//disable interrupt
 	__asm__("cli");
-	for(;;);
+	for(;;){
+		__asm__("hlt");
+	}
 }	

@@ -11,15 +11,12 @@ bool IsLowerCase(char input);
 /*
 	Convert Operations
 */
-int ToString(int8 input, char buffer[]);
-int ToString(int16 input, char buffer[]);
-int ToString(int32 input, char buffer[]);
-int ToString(int64 input, char buffer[]);
+int ToString(int64 input, char *buffer);
+int ToString(uint64 input, char *buffer);
 
-int ToString(uint8 input, char buffer[]);
-int ToString(uint16 input, char buffer[]);
-int ToString(uint32 input, char buffer[]);
-int ToString(uint64 input, char buffer[]);
+int ToHexString(int64 input, char *buff, bool upper);
+uint64 TextToHex(char *buff);
 
-int ToHexString(int64 input, char buff[]);
+char* strcpy(char *S1, const char *S2);
+char* strncpy(char *S1, const char *S2, uint64 n);
 #endif
