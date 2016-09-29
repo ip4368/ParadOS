@@ -1,21 +1,21 @@
 #include "Library/Math.h"
 
-int64 pow(int z, int x)
+int64 pow(int base, int n)
 {
 	// special cases
-	if(x < 0)  return 0;
-	if(x == 0) return 1;
+	if(n < 0)  return 0;
+	if(n == 0) return 1;
 
 	/*
 	 * Iterative solution for powering
 	 * Complexity is O(log x)
 	 */
-	int64 result = z;
-	while(x > 1)
+	int64 result = base;
+	while(n > 1)
 	{
 		result *= result;
-		if(x % 2) result *= z;
-		x /= 2;
+		if(n % 2) result *= base;
+		n /= 2;
 	}
 	return result;
 }
